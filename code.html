@@ -35,18 +35,18 @@
     }
 
     html[data-theme='dark'] {
-      --bg-canvas: #121812;
-      --bg-surface: #1a221a;
-      --bg-surface-subtle: rgba(26, 34, 26, 0.7);
-      --bg-card: #151d15;
-      --text-main: #edf3e2;
-      --text-muted: rgba(237, 243, 226, 0.75);
-      --text-subtle: rgba(237, 243, 226, 0.5);
-      --border-hairline: rgba(237, 243, 226, 0.18);
-      --pill-bg: #edf3e2;
-      --pill-text: #121812;
+      --bg-canvas: #243322;
+      --bg-surface: #1E2B1C;
+      --bg-surface-subtle: rgba(30, 43, 28, 0.75);
+      --bg-card: #192418;
+      --text-main: #DFE5D3;
+      --text-muted: rgba(223, 229, 211, 0.78);
+      --text-subtle: rgba(223, 229, 211, 0.55);
+      --border-hairline: rgba(223, 229, 211, 0.20);
+      --pill-bg: #DFE5D3;
+      --pill-text: #243322;
       --ink-rim: #DFE5D3;
-      --grain-opacity: 0.025;
+      --grain-opacity: 0.03;
     }
 
     .display-condensed {
@@ -220,10 +220,18 @@
       pointer-events: none;
       z-index: 9999;
       opacity: 0;
-      transition: opacity 0.2s ease-out;
+      will-change: opacity;
     }
-    #ink-bleed-canvas.active {
-      opacity: 1;
+
+    /* Seamless global theme transition smoothing */
+    html {
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body {
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    header, section, footer, article, dialog, .stack-pillar-card {
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .custom-scrollbar::-webkit-scrollbar {
@@ -330,6 +338,7 @@
 
       <!-- Desktop Editorial Navigation Links -->
       <nav aria-label="Main Navigation" class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-widest text-moss/80" data-purpose="primary-navigation">
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#about">About</a>
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#projects">Projects</a>
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#stack">Stack</a>
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#stance">Stance</a>
@@ -368,21 +377,25 @@
     <!-- Mobile Drawer Overlay Navigation -->
     <div aria-hidden="true" class="hidden md:hidden fixed inset-x-0 top-[68px] sm:top-[73px] border-b hairline-border shadow-2xl px-6 py-8 transition-all duration-300 z-[60]" id="mobile-nav" style="background-color: var(--bg-canvas);">
       <nav aria-label="Mobile Navigation" class="flex flex-col space-y-6 text-sm font-semibold uppercase tracking-widest text-moss">
+        <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#about">
+          <span>About Me</span>
+          <span class="font-mono text-xs text-moss/60">01</span>
+        </a>
         <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#projects">
           <span>Featured Projects</span>
-          <span class="font-mono text-xs text-moss/60">01</span>
+          <span class="font-mono text-xs text-moss/60">02</span>
         </a>
         <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#stack">
           <span>Technical Stack</span>
-          <span class="font-mono text-xs text-moss/60">02</span>
+          <span class="font-mono text-xs text-moss/60">03</span>
         </a>
         <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#stance">
           <span>Engineering Stance</span>
-          <span class="font-mono text-xs text-moss/60">03</span>
+          <span class="font-mono text-xs text-moss/60">04</span>
         </a>
         <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#analytics">
           <span>GitHub Metrics &amp; Graph</span>
-          <span class="font-mono text-xs text-moss/60">04</span>
+          <span class="font-mono text-xs text-moss/60">05</span>
         </a>
         <a class="mobile-nav-link pt-2 flex items-center justify-between text-moss-muted" href="#contact">
           <span>Get in Touch</span>
@@ -536,41 +549,87 @@
     </section>
     <!-- END: HeroSection -->
 
-    <!-- BEGIN: PhilosophySection (Engineering Stance) -->
-    <section class="border-t hairline-border bg-celadon-surface/50 pt-8 md:pt-12 pb-14 md:pb-20 reveal-on-scroll scroll-mt-20" data-purpose="engineering-philosophy" id="stance">
+    <!-- BEGIN: AboutSection (Beyond the Code) -->
+    <section class="border-t hairline-border bg-celadon pt-10 md:pt-16 pb-14 md:pb-20 reveal-on-scroll scroll-mt-20" data-purpose="portfolio-about-me" id="about">
       <div class="max-w-[1440px] mx-auto px-6 md:px-12">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-start">
-          <!-- Sticky section label -->
-          <div class="lg:col-span-3">
-            <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-moss/70 block">
-              // Engineering Stance
-            </span>
-            <h2 class="text-2xl font-editorial font-bold text-moss mt-3">Precision &amp; Rigor</h2>
-          </div>
-          <!-- Main Manifesto Text -->
-          <div class="lg:col-span-9 space-y-10">
-            <p class="text-2xl sm:text-3xl md:text-4xl leading-tight font-editorial font-medium text-moss">
-              "We reject brittle, ephemeral micro-trends in favor of <span class="editorial-italic font-normal">modular resilience</span>, strict type-safety, and systems architecture engineered to scale gracefully."
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <!-- Left Column: Sticky Section Marker & Title -->
+          <div class="lg:col-span-4 space-y-4">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <span class="text-[11px] font-mono uppercase tracking-[0.22em] text-moss/70 block">
+                // About Me • Narrative
+              </span>
+            </div>
+            <h2 class="display-condensed text-5xl sm:text-6xl lg:text-7xl tracking-tight text-moss leading-[0.88]">
+              BEYOND<br>THE CODE.
+            </h2>
+            <p class="font-editorial italic text-base sm:text-lg text-moss/80 pt-1">
+              "Building useful digital products with purpose, precision, and curiosity."
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t hairline-border text-sm leading-relaxed text-moss/80">
-              <div class="transition-transform duration-300 hover:-translate-y-1">
-                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">01 / Clean Architecture</h3>
-                <p>Strong emphasis on readability, maintainability, type contracts, and predictable data flow from database layer to client UI.</p>
+
+            <!-- 4 Core Pillars Badges -->
+            <div class="pt-4 grid grid-cols-2 gap-2.5">
+              <div class="p-3 rounded-2xl bg-celadon-surface/80 border hairline-border flex items-center gap-2.5 shadow-xs transition-transform duration-300 hover:scale-[1.02]">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                <span class="text-xs font-mono font-semibold text-moss">Always learning</span>
               </div>
-              <div class="transition-transform duration-300 hover:-translate-y-1">
-                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">02 / Low-Latency Systems</h3>
-                <p>Performance is a primary feature. Optimizing network calls, minimizing bundle weight, and delivering 60 FPS fluid rendering.</p>
+              <div class="p-3 rounded-2xl bg-celadon-surface/80 border hairline-border flex items-center gap-2.5 shadow-xs transition-transform duration-300 hover:scale-[1.02]">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                <span class="text-xs font-mono font-semibold text-moss">Building projects</span>
               </div>
-              <div class="transition-transform duration-300 hover:-translate-y-1">
-                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">03 / Systems &amp; Networking</h3>
-                <p>Solid computer networking background (TCP/IP, subnetting, reverse proxies, Linux administration) paired with modern cloud deploy pipelines.</p>
+              <div class="p-3 rounded-2xl bg-celadon-surface/80 border hairline-border flex items-center gap-2.5 shadow-xs transition-transform duration-300 hover:scale-[1.02]">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                <span class="text-xs font-mono font-semibold text-moss">Problem solving</span>
               </div>
+              <div class="p-3 rounded-2xl bg-celadon-surface/80 border hairline-border flex items-center gap-2.5 shadow-xs transition-transform duration-300 hover:scale-[1.02]">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                <span class="text-xs font-mono font-semibold text-moss">Exploring AI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Narrative Biography & Philosophy -->
+          <div class="lg:col-span-8 flex flex-col justify-between space-y-6 lg:pl-4">
+            <div class="space-y-5 text-base sm:text-lg leading-relaxed text-moss/90 font-normal">
+              <p class="font-medium text-moss text-lg sm:text-xl leading-snug">
+                I'm <span class="font-bold underline decoration-emerald-600/40 decoration-2 underline-offset-4">Harry</span>, a software developer with a background in <span class="font-semibold text-moss">Computer Engineering Technology</span> and a genuine interest in building useful digital products.
+              </p>
+              <p>
+                I enjoy turning ideas into functional applications, experimenting with modern technologies, and understanding how things work beyond the interface.
+              </p>
+              <p>
+                My interests span <span class="font-semibold text-moss">full-stack development</span>, <span class="font-semibold text-moss">mobile applications</span>, <span class="font-semibold text-moss">automation</span>, and <span class="font-semibold text-moss">emerging AI technologies</span>. I believe the best software isn't just technically impressive; it should solve real problems and feel effortless to use.
+              </p>
+              <div class="p-5 sm:p-6 rounded-2xl bg-celadon-surface/60 border hairline-border space-y-2 mt-2">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-moss/70 block">// Current Focus</span>
+                <p class="text-sm sm:text-base text-moss font-medium leading-relaxed">
+                  Currently exploring new technologies, building independent projects, and looking for opportunities to grow as a developer.
+                </p>
+              </div>
+            </div>
+
+            <!-- Contextual CTA Footer -->
+            <div class="pt-4 border-t hairline-border flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <a class="interactive-pill-btn px-5 py-2.5 rounded-full bg-moss text-celadon text-xs font-mono uppercase tracking-wider flex items-center gap-2 hover:bg-moss-dark transition-all shadow-sm" href="#projects">
+                  <span>Explore Featured Works</span>
+                  <span>→</span>
+                </a>
+                <a class="interactive-pill-btn px-5 py-2.5 rounded-full border hairline-border text-xs font-mono uppercase tracking-wider text-moss hover:bg-celadon-surface transition-all flex items-center gap-2" href="#contact">
+                  <span>Get in Touch</span>
+                  <span>↗</span>
+                </a>
+              </div>
+              <span class="text-xs font-mono text-moss/60 uppercase tracking-widest">
+                Ontario, Canada • EST (UTC-5)
+              </span>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- END: PhilosophySection -->
+    <!-- END: AboutSection -->
 
     <!-- BEGIN: SelectedProjects -->
     <section class="py-0 pt-8 md:pt-12 pb-14 md:pb-20 max-w-[1440px] mx-auto px-6 md:px-12 scroll-mt-20" data-purpose="portfolio-selected-projects" id="projects">
@@ -1076,6 +1135,42 @@
     </section>
     <!-- END: TechStack -->
 
+    <!-- BEGIN: PhilosophySection (Engineering Stance) -->
+    <section class="border-t hairline-border bg-celadon-surface/50 pt-8 md:pt-12 pb-14 md:pb-20 reveal-on-scroll scroll-mt-20" data-purpose="engineering-philosophy" id="stance">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-start">
+          <!-- Sticky section label -->
+          <div class="lg:col-span-3">
+            <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-moss/70 block">
+              // Engineering Stance
+            </span>
+            <h2 class="text-2xl font-editorial font-bold text-moss mt-3">Precision &amp; Rigor</h2>
+          </div>
+          <!-- Main Manifesto Text -->
+          <div class="lg:col-span-9 space-y-10">
+            <p class="text-2xl sm:text-3xl md:text-4xl leading-tight font-editorial font-medium text-moss">
+              "We reject brittle, ephemeral micro-trends in favor of <span class="editorial-italic font-normal">modular resilience</span>, strict type-safety, and systems architecture engineered to scale gracefully."
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t hairline-border text-sm leading-relaxed text-moss/80">
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">01 / Clean Architecture</h3>
+                <p>Strong emphasis on readability, maintainability, type contracts, and predictable data flow from database layer to client UI.</p>
+              </div>
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">02 / Low-Latency Systems</h3>
+                <p>Performance is a primary feature. Optimizing network calls, minimizing bundle weight, and delivering 60 FPS fluid rendering.</p>
+              </div>
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">03 / Systems &amp; Networking</h3>
+                <p>Solid computer networking background (TCP/IP, subnetting, reverse proxies, Linux administration) paired with modern cloud deploy pipelines.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: PhilosophySection -->
+
     <!-- BEGIN: GitHubAnalytics & Activities (Redesigned with Live Snake Graph & Feed) -->
     <section class="border-t hairline-border pt-8 md:pt-12 pb-14 md:pb-20 bg-celadon reveal-on-scroll scroll-mt-20" data-purpose="github-live-analytics" id="analytics">
       <div class="max-w-[1440px] mx-auto px-6 md:px-12">
@@ -1279,7 +1374,6 @@
       <div class="flex items-center space-x-6 sm:space-x-8 font-mono uppercase tracking-wider text-[11px]">
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://github.com/Harrykalsi24" rel="noreferrer" target="_blank">GitHub</a>
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://www.linkedin.com/in/harrykalsi24/" rel="noreferrer" target="_blank">LinkedIn</a>
-        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://harrykalsi24.github.io/Portfolio/" rel="noreferrer" target="_blank">Portfolio</a>
         <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="mailto:harjit2003singh@gmail.com">Email</a>
       </div>
 
@@ -1523,6 +1617,25 @@
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, size, size, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
+
+        // Pre-cache all shader uniform locations for stutter-free 120fps render loop
+        this.uLoc = {
+          uRes: gl.getUniformLocation(this.program, 'uRes'),
+          uCenter: gl.getUniformLocation(this.program, 'uCenter'),
+          uRadius: gl.getUniformLocation(this.program, 'uRadius'),
+          uCleanup: gl.getUniformLocation(this.program, 'uCleanup'),
+          uTime: gl.getUniformLocation(this.program, 'uTime'),
+          uRef: gl.getUniformLocation(this.program, 'uRef'),
+          uSeed: gl.getUniformLocation(this.program, 'uSeed'),
+          uSeedRot: gl.getUniformLocation(this.program, 'uSeedRot'),
+          uTendril: gl.getUniformLocation(this.program, 'uTendril'),
+          uNoiseScale: gl.getUniformLocation(this.program, 'uNoiseScale'),
+          uSoftness: gl.getUniformLocation(this.program, 'uSoftness'),
+          uDrift: gl.getUniformLocation(this.program, 'uDrift'),
+          uInkColor: gl.getUniformLocation(this.program, 'uInkColor'),
+          uRimColor: gl.getUniformLocation(this.program, 'uRimColor'),
+          uNoise: gl.getUniformLocation(this.program, 'uNoise')
+        };
       }
 
       init() {
@@ -1576,14 +1689,13 @@
 
         this.isAnimating = true;
         this.canvas.style.opacity = '1';
-        this.canvas.classList.add('active');
 
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const centerDev = [originX * dpr, originY * dpr];
         const maxDist = Math.hypot(
           Math.max(originX, window.innerWidth - originX),
           Math.max(originY, window.innerHeight - originY)
-        ) * dpr * 1.08;
+        ) * dpr * 1.18;
 
         const seed = [Math.random() * 64 - 32, Math.random() * 64 - 32];
         const angle = Math.random() * Math.PI * 2;
@@ -1591,47 +1703,49 @@
 
         // Incoming theme ink colors adapted for Atelier Moss
         const isDarkTarget = targetTheme === 'dark';
-        const inkRGB = isDarkTarget ? [0.07, 0.094, 0.07] : [0.875, 0.898, 0.827];
+        const inkRGB = isDarkTarget ? [0.1412, 0.2000, 0.1333] : [0.8745, 0.8980, 0.8275];
         const rimRGB = isDarkTarget ? [0.875, 0.898, 0.827] : [0.114, 0.165, 0.106];
         const startTime = performance.now();
         let themeSwapped = false;
 
         const state = { progress: 0 };
-        const duration = 1.35; // Sustained continuous wave spread (zero blank dwell)
+        const duration = 1.05; // Tight, fluid organic expansion
 
         const onFrame = () => {
           const p = state.progress;
           const time = (performance.now() - startTime) / 1000;
-          // Steady outward wave expansion that actively travels across screen the whole duration
-          const radius = p * maxDist * 0.94;
-          const cleanup = p > 0.72 ? Math.pow((p - 0.72) / 0.28, 2) * maxDist * 0.16 : 0;
+          // Fluid organic expansion that smoothly covers all viewport corners
+          const radius = p * maxDist;
+          const cleanup = p > 0.82 ? Math.pow((p - 0.82) / 0.18, 2) * maxDist * 0.12 : 0;
 
-          if (!themeSwapped && p >= 0.50) {
+          // Swap theme seamlessly when screen is fully engulfed by the wave
+          if (!themeSwapped && p >= 0.78) {
             this.setTheme(targetTheme, true);
             themeSwapped = true;
           }
 
-          if (this.gl && this.program) {
+          if (this.gl && this.program && this.uLoc) {
             const gl = this.gl;
             gl.useProgram(this.program);
-            gl.uniform2f(gl.getUniformLocation(this.program, 'uRes'), this.canvas.width, this.canvas.height);
-            gl.uniform2f(gl.getUniformLocation(this.program, 'uCenter'), centerDev[0], centerDev[1]);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uRadius'), radius);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uCleanup'), cleanup);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uTime'), time);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uRef'), Math.max(this.canvas.width, this.canvas.height));
-            gl.uniform2f(gl.getUniformLocation(this.program, 'uSeed'), seed[0], seed[1]);
-            gl.uniformMatrix2fv(gl.getUniformLocation(this.program, 'uSeedRot'), false, seedRot);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uTendril'), 1.0);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uNoiseScale'), 1.0);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uSoftness'), 1.4);
-            gl.uniform1f(gl.getUniformLocation(this.program, 'uDrift'), 1.0);
-            gl.uniform3f(gl.getUniformLocation(this.program, 'uInkColor'), inkRGB[0], inkRGB[1], inkRGB[2]);
-            gl.uniform3f(gl.getUniformLocation(this.program, 'uRimColor'), rimRGB[0], rimRGB[1], rimRGB[2]);
+            const loc = this.uLoc;
+            gl.uniform2f(loc.uRes, this.canvas.width, this.canvas.height);
+            gl.uniform2f(loc.uCenter, centerDev[0], centerDev[1]);
+            gl.uniform1f(loc.uRadius, radius);
+            gl.uniform1f(loc.uCleanup, cleanup);
+            gl.uniform1f(loc.uTime, time);
+            gl.uniform1f(loc.uRef, Math.max(this.canvas.width, this.canvas.height));
+            gl.uniform2f(loc.uSeed, seed[0], seed[1]);
+            gl.uniformMatrix2fv(loc.uSeedRot, false, seedRot);
+            gl.uniform1f(loc.uTendril, 1.0);
+            gl.uniform1f(loc.uNoiseScale, 1.0);
+            gl.uniform1f(loc.uSoftness, 1.6);
+            gl.uniform1f(loc.uDrift, 0.8);
+            gl.uniform3f(loc.uInkColor, inkRGB[0], inkRGB[1], inkRGB[2]);
+            gl.uniform3f(loc.uRimColor, rimRGB[0], rimRGB[1], rimRGB[2]);
 
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.noiseTex);
-            gl.uniform1i(gl.getUniformLocation(this.program, 'uNoise'), 0);
+            gl.uniform1i(loc.uNoise, 0);
 
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
@@ -1642,31 +1756,33 @@
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             ctx.save();
             ctx.beginPath();
-            const tendrils = 24;
+            const tendrils = 32;
             for (let i = 0; i <= tendrils; i++) {
               const a = (i / tendrils) * Math.PI * 2;
-              const r = radius * (1 + 0.12 * Math.sin(a * 4 + time * 3));
+              const r = radius * (1 + 0.10 * Math.sin(a * 4 + time * 3));
               const x = centerDev[0] + Math.cos(a) * r;
               const y = centerDev[1] + Math.sin(a) * r;
               if (i === 0) ctx.moveTo(x, y);
               else ctx.lineTo(x, y);
             }
             ctx.closePath();
-            ctx.fillStyle = isDarkTarget ? '#121812' : '#DFE5D3';
+            ctx.fillStyle = isDarkTarget ? '#243322' : '#DFE5D3';
             ctx.fill();
             ctx.restore();
           }
         };
 
         const onDone = () => {
+          if (!themeSwapped) {
+            this.setTheme(targetTheme, true);
+            themeSwapped = true;
+          }
           if (window.gsap) {
-            // Immediate crisp dissolve the moment wave reaches corners (zero blank screen)
             gsap.to(this.canvas, {
               opacity: 0,
-              duration: 0.14,
-              ease: 'power2.out',
+              duration: 0.28,
+              ease: 'power2.inOut',
               onComplete: () => {
-                this.canvas.classList.remove('active');
                 if (this.gl) this.gl.clear(this.gl.COLOR_BUFFER_BIT);
                 if (this.ctx) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.isAnimating = false;
@@ -1674,7 +1790,6 @@
             });
           } else {
             this.canvas.style.opacity = '0';
-            this.canvas.classList.remove('active');
             this.isAnimating = false;
           }
         };
@@ -1683,7 +1798,7 @@
           gsap.to(state, {
             progress: 1,
             duration: duration,
-            ease: 'power1.out', // Sustained, continuous spread speed throughout the entire animation
+            ease: 'power2.out',
             onUpdate: onFrame,
             onComplete: onDone
           });
