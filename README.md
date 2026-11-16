@@ -18,8 +18,6 @@ An ultra-refined, editorial-grade engineering portfolio designed and built for *
 ### Desktop Dark Theme (Obsidian Mode)
 ![Desktop Dark Preview](assets/screenshots/hero-desktop-dark.png)
 
-### Mobile & Responsive Layout
-![Mobile Preview](assets/screenshots/hero-mobile-light.png)
 
 ---
 
