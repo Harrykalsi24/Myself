@@ -10,14 +10,13 @@ An ultra-refined, editorial-grade engineering portfolio designed and built for *
 
 ---
 
-## 📸 Visual Mockups & Previews
+## 📸 Visual Previews
 
-### Desktop Light Theme (Celadon Parchment)
-![Desktop Light Preview](assets/screenshots/hero-desktop-light.png)
+### Light Mode (Celadon Parchment)
+![Celadon Light Preview](assets/screenshots/preview-light.jpg)
 
-### Desktop Dark Theme (Obsidian Mode)
-![Desktop Dark Preview](assets/screenshots/hero-desktop-dark.png)
-
+### Dark Mode (Obsidian Noir)
+![Obsidian Dark Preview](assets/screenshots/preview-dark.jpg)
 
 ---
 
@@ -28,7 +27,7 @@ An ultra-refined, editorial-grade engineering portfolio designed and built for *
 - **Dynamic Typewriter Subtitle**: Continuously cycles through professional engineering titles beneath "Harjit Singh" with authentic terminal-style blinking caret.
 - **WebGL2 Organic Ink-Bleed Theme Engine**: High-fidelity procedural Perlin noise wave expansion (`1.35s`, `power1.out`) transitioning seamlessly between light Celadon Parchment and dark Obsidian modes.
 - **Interactive Project Showcase**: Deep dive into 6 production applications with modal inspection overlays, live deployment links, and source repositories.
-- **Architectural Engineering Matrix**: Filterable domain pills (*Client & Mobile*, *Systems & Core*, *Cloud & DevOps*) with tactile principles strip.
+- **Architectural Engineering Matrix**: Filterable domain pills (*Client & Mobile*, *Systems & Core*, *Cloud & DevOps*) with progressive disclosure on mobile.
 - **Real-Time Integration**: Live GitHub contribution stats and localized real-time header clock.
 
 ---
