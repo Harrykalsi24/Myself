@@ -82,6 +82,14 @@
       }
     }
 
+
+    /* Solid Mobile Menu Background in Light & Dark Mode */
+    #mobile-nav {
+      background-color: var(--bg-canvas) !important;
+      border-bottom: 1px solid var(--border-hairline) !important;
+      box-shadow: 0 25px 35px -5px rgba(18, 24, 18, 0.3) !important;
+    }
+
     /* --- Interactive Difference Cursor (Refined Editorial Scale) --- */
     .cursor {
       position: fixed;
@@ -358,7 +366,7 @@
     </div>
 
     <!-- Mobile Drawer Overlay Navigation -->
-    <div aria-hidden="true" class="hidden md:hidden fixed inset-x-0 top-[73px] bg-celadon/98 backdrop-blur-xl border-b hairline-border shadow-xl px-6 py-8 transition-all duration-300" id="mobile-nav">
+    <div aria-hidden="true" class="hidden md:hidden fixed inset-x-0 top-[68px] sm:top-[73px] border-b hairline-border shadow-2xl px-6 py-8 transition-all duration-300 z-[60]" id="mobile-nav" style="background-color: var(--bg-canvas);">
       <nav aria-label="Mobile Navigation" class="flex flex-col space-y-6 text-sm font-semibold uppercase tracking-widest text-moss">
         <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#projects">
           <span>Featured Projects</span>
@@ -427,26 +435,26 @@
           </div>
         </div>
 
-        <!-- Center Column: Monumental Giant Condensed Typography Stack (Overflow Visible + Breathing Room) -->
-        <div class="lg:col-span-6 relative flex items-center justify-center min-h-0 select-none order-1 lg:order-2 overflow-visible px-2 sm:px-4 py-0" data-purpose="hero-center-visual-block" id="hero-center-container">
-          <!-- Massive 3-Tier Layered Condensed Headline: Solve. Shape. Simplify. (Center Aligned) -->
-          <div class="display-condensed text-[54px] min-[400px]:text-[66px] sm:text-[108px] md:text-[142px] lg:text-[168px] xl:text-[196px] font-black tracking-normal text-moss text-center flex flex-col items-center justify-center leading-[0.82] w-full mx-auto z-0 select-none overflow-visible pt-0 pb-1" id="hero-headline-group">
-            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
-              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-1 will-change-transform px-2 sm:px-4">SOLVE.</span>
+        <!-- Center Column: Monumental Giant Condensed Typography Stack (Left Text + Right Avatar on Mobile; Centered on Desktop) -->
+        <div class="lg:col-span-6 relative flex items-center justify-between lg:justify-center min-h-[180px] min-[380px]:min-h-[220px] sm:min-h-0 select-none order-1 lg:order-2 overflow-visible px-2 sm:px-4 py-1 sm:py-0" data-purpose="hero-center-visual-block" id="hero-center-container">
+          <!-- Massive 3-Tier Layered Condensed Headline: Solve. Shape. Simplify. (Left Aligned on Mobile, Centered on Desktop) -->
+          <div class="display-condensed text-[46px] min-[360px]:text-[54px] min-[400px]:text-[64px] sm:text-[108px] md:text-[142px] lg:text-[168px] xl:text-[196px] font-black tracking-normal text-moss text-left lg:text-center flex flex-col items-start lg:items-center justify-center leading-[0.82] w-auto lg:w-full z-0 select-none overflow-visible pt-0 pb-1" id="hero-headline-group">
+            <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-1 will-change-transform px-1 sm:px-4">SOLVE.</span>
             </span>
-            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
-              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-2 will-change-transform px-2 sm:px-4">SHAPE.</span>
+            <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-2 will-change-transform px-1 sm:px-4">SHAPE.</span>
             </span>
-            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
-              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-3 will-change-transform px-2 sm:px-4">SIMPLIFY.</span>
+            <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-3 will-change-transform px-1 sm:px-4">SIMPLIFY.</span>
             </span>
           </div>
 
-          <!-- Cutout / Silhouette Avatar Layered Figure (Dynamic Draggable Component) -->
-          <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10 hero-cutout-wrapper overflow-visible" data-purpose="hero-editorial-subject-cutout" id="hero-parallax-art">
+          <!-- Cutout / Silhouette Avatar Layered Figure (Right Half on Mobile, Centered on Desktop) -->
+          <div class="absolute inset-0 flex items-center justify-end lg:justify-center pointer-events-none z-10 hero-cutout-wrapper overflow-visible pr-1 min-[380px]:pr-3 sm:pr-6 lg:pr-0" data-purpose="hero-editorial-subject-cutout" id="hero-parallax-art">
             <div class="relative flex items-center justify-center hero-float-idle" id="hero-avatar-float-wrap">
               <!-- Rounded avatar badge with tactile jelly spring dynamics -->
-              <div id="hero-draggable-avatar" class="group/avatar w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-all duration-300 hover:shadow-2xl hover:border-moss/60 hover:scale-[1.02]" title="Drag me!">
+              <div id="hero-draggable-avatar" class="group/avatar w-32 h-32 min-[360px]:w-36 min-[360px]:h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-1.5 sm:p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-all duration-300 hover:shadow-2xl hover:border-moss/60 hover:scale-[1.02]" title="Drag me!">
                 <img alt="Harjit Singh GitHub avatar" class="w-full h-full object-cover rounded-full contrast-[1.05] grayscale group-hover/avatar:grayscale-0 group-active/avatar:grayscale-0 transition-all duration-700 pointer-events-none select-none" draggable="false" fetchpriority="high" loading="eager" src="https://avatars.githubusercontent.com/u/166169358?v=4">
               </div>
             </div>
@@ -678,8 +686,8 @@
           </div>
         </article>
 
-        <!-- Project 04: Ecal Financial Engine -->
-        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('ecal')">
+        <!-- Project 04: Ecal Financial Engine (Hidden on Mobile by Default, Shown on Desktop) -->
+        <article class="mobile-extra-project hidden sm:flex group cursor-pointer flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('ecal')">
           <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
             <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/55 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
               <div class="flex justify-between items-start">
@@ -711,8 +719,8 @@
           </div>
         </article>
 
-        <!-- Project 05: Snake-Game -->
-        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('snake')" style="transition-delay: 100ms;">
+        <!-- Project 05: Snake-Game (Hidden on Mobile by Default, Shown on Desktop) -->
+        <article class="mobile-extra-project hidden sm:flex group cursor-pointer flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('snake')" style="transition-delay: 100ms;">
           <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
             <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/60 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
               <div class="flex justify-between items-start">
@@ -744,8 +752,8 @@
           </div>
         </article>
 
-        <!-- Project 06: LoginUI -->
-        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('loginui')" style="transition-delay: 200ms;">
+        <!-- Project 06: LoginUI (Hidden on Mobile by Default, Shown on Desktop) -->
+        <article class="mobile-extra-project hidden sm:flex group cursor-pointer flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('loginui')" style="transition-delay: 200ms;">
           <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
             <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/50 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
               <div class="flex justify-between items-start">
@@ -776,6 +784,14 @@
             <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
           </div>
         </article>
+      </div>
+
+      <!-- Mobile View More / Less Projects Toggle Button (Hidden on Desktop) -->
+      <div class="sm:hidden text-center pt-8">
+        <button id="toggle-more-projects-btn" onclick="toggleMobileProjects()" class="interactive-pill-btn px-6 py-3 rounded-full border hairline-border bg-celadon text-xs font-mono uppercase tracking-widest text-moss hover:bg-celadon-surface transition-all flex items-center justify-center gap-2 mx-auto shadow-sm" type="button">
+          <span id="toggle-projects-text">View More Projects (+3)</span>
+          <span id="toggle-projects-icon" class="text-xs transition-transform duration-300">↓</span>
+        </button>
       </div>
     </section>
     <!-- END: SelectedProjects -->
@@ -884,8 +900,8 @@
             </div>
           </div>
 
-          <!-- Pillar 02: Systems, Languages & Core Computation -->
-          <div class="stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="systems">
+          <!-- Pillar 02: Systems, Languages & Core Computation (Hidden on Mobile by default, shown on desktop) -->
+          <div class="mobile-extra-pillar hidden lg:flex stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="systems">
             <div class="space-y-6">
               <div class="flex items-start justify-between">
                 <div class="space-y-1">
@@ -955,8 +971,8 @@
             </div>
           </div>
 
-          <!-- Pillar 03: Cloud Infrastructure, Networks & DevOps -->
-          <div class="stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="infra">
+          <!-- Pillar 03: Cloud Infrastructure, Networks & DevOps (Hidden on Mobile by default, shown on desktop) -->
+          <div class="mobile-extra-pillar hidden lg:flex stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="infra">
             <div class="space-y-6">
               <div class="flex items-start justify-between">
                 <div class="space-y-1">
@@ -1027,6 +1043,14 @@
               <span>Zero Downtime</span>
             </div>
           </div>
+        </div>
+
+        <!-- Mobile View More Stack Pillars Toggle Button (Hidden on Desktop) -->
+        <div id="mobile-pillars-toggle-wrap" class="lg:hidden text-center pt-8">
+          <button id="toggle-more-pillars-btn" onclick="toggleMobilePillars()" class="interactive-pill-btn px-6 py-3 rounded-full border hairline-border bg-celadon text-xs font-mono uppercase tracking-widest text-moss hover:bg-celadon-surface transition-all flex items-center justify-center gap-2 mx-auto shadow-sm" type="button">
+            <span id="toggle-pillars-text">Explore All Domains (Systems, Cloud)</span>
+            <span id="toggle-pillars-icon" class="text-xs transition-transform duration-300">↓</span>
+          </button>
         </div>
 
         <!-- Architectural Principles Banner -->
@@ -1952,6 +1976,66 @@
     }
 
     // Stack Filter Interaction
+    // --- Mobile Progressive Disclosure Handlers ---
+    function toggleMobileProjects() {
+      const extraProjects = document.querySelectorAll('.mobile-extra-project');
+      const btnText = document.getElementById('toggle-projects-text');
+      const btnIcon = document.getElementById('toggle-projects-icon');
+      if (!extraProjects.length || !btnText) return;
+
+      const isHidden = extraProjects[0].classList.contains('hidden');
+      extraProjects.forEach(card => {
+        if (isHidden) {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+        } else {
+          card.classList.add('hidden');
+          card.classList.remove('flex');
+        }
+      });
+
+      if (isHidden) {
+        btnText.textContent = 'Show Fewer Projects';
+        if (btnIcon) btnIcon.textContent = '↑';
+      } else {
+        btnText.textContent = 'View More Projects (+3)';
+        if (btnIcon) btnIcon.textContent = '↓';
+        const sec = document.getElementById('projects');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    let isMobilePillarsExpanded = false;
+    function toggleMobilePillars() {
+      const extraPillars = document.querySelectorAll('.mobile-extra-pillar');
+      const btnText = document.getElementById('toggle-pillars-text');
+      const btnIcon = document.getElementById('toggle-pillars-icon');
+      if (!extraPillars.length || !btnText) return;
+
+      isMobilePillarsExpanded = !isMobilePillarsExpanded;
+      extraPillars.forEach(card => {
+        if (isMobilePillarsExpanded) {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+          card.style.display = 'flex';
+        } else {
+          card.classList.add('hidden');
+          card.classList.remove('flex');
+          card.style.display = 'none';
+        }
+      });
+
+      if (isMobilePillarsExpanded) {
+        btnText.textContent = 'Show Fewer Domains';
+        if (btnIcon) btnIcon.textContent = '↑';
+      } else {
+        btnText.textContent = 'Explore All Domains (Systems, Cloud)';
+        if (btnIcon) btnIcon.textContent = '↓';
+        const sec = document.getElementById('stack');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
     function initStackFilters() {
       const filterBtns = document.querySelectorAll('.stack-filter-btn');
       const cards = document.querySelectorAll('.stack-pillar-card');
@@ -1969,13 +2053,33 @@
 
           cards.forEach(card => {
             const cat = card.getAttribute('data-category');
-            if (filter === 'all' || cat === filter) {
+            if (filter === 'all') {
+              if (window.innerWidth < 1024 && card.classList.contains('mobile-extra-pillar') && !isMobilePillarsExpanded) {
+                card.style.display = 'none';
+                card.classList.add('hidden');
+                card.classList.remove('flex');
+              } else {
+                card.style.display = 'flex';
+                card.classList.remove('hidden');
+                card.classList.add('flex');
+                if (window.gsap) gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' });
+              }
+            } else if (cat === filter) {
               card.style.display = 'flex';
+              card.classList.remove('hidden');
+              card.classList.add('flex');
               if (window.gsap) gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' });
             } else {
               card.style.display = 'none';
+              card.classList.add('hidden');
+              card.classList.remove('flex');
             }
           });
+
+          const toggleWrap = document.getElementById('mobile-pillars-toggle-wrap');
+          if (toggleWrap) {
+            toggleWrap.classList.toggle('hidden', filter !== 'all');
+          }
         });
       });
     }
