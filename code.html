@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" data-theme="light" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>It's Harry!</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="Portfolio of Harjit Singh (Harry Kalsi) — Software Developer specializing in Full-Stack Web, Cross-Platform Mobile Apps, and Network Architecture.">
+  <!-- GSAP Core for Smooth Ink Bleed Easing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Tailwind CSS v3 with plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts: Barlow Condensed & Hanken Grotesk + Anton, Syne, Fira Code -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&amp;family=Fira+Code:wght@400;500;600&amp;family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet">
+  
+  <!-- Theme Color Variables & Unified Styles -->
+  <style>
+    :root {
+      --bg-canvas: #DFE5D3;
+      --bg-surface: #D8DFC9;
+      --bg-surface-subtle: rgba(216, 223, 201, 0.5);
+      --bg-card: #D3DAC4;
+      --text-main: #384C35;
+      --text-muted: rgba(56, 76, 53, 0.75);
+      --text-subtle: rgba(56, 76, 53, 0.55);
+      --border-hairline: rgba(56, 76, 53, 0.22);
+      --pill-bg: #384C35;
+      --pill-text: #DFE5D3;
+      --ink-rim: #1D2A1B;
+      --grain-opacity: 0.045;
+      --editorial-ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --editorial-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    html[data-theme='dark'] {
+      --bg-canvas: #121812;
+      --bg-surface: #1a221a;
+      --bg-surface-subtle: rgba(26, 34, 26, 0.7);
+      --bg-card: #151d15;
+      --text-main: #edf3e2;
+      --text-muted: rgba(237, 243, 226, 0.75);
+      --text-subtle: rgba(237, 243, 226, 0.5);
+      --border-hairline: rgba(237, 243, 226, 0.18);
+      --pill-bg: #edf3e2;
+      --pill-text: #121812;
+      --ink-rim: #DFE5D3;
+      --grain-opacity: 0.025;
+    }
+
+    .display-condensed {
+      font-family: 'Barlow Condensed', 'Anton', -apple-system, BlinkMacSystemFont, sans-serif;
+      text-transform: uppercase;
+      line-height: 0.85;
+      letter-spacing: -0.015em;
+      text-align: center;
+    }
+    .editorial-italic {
+      font-family: 'Hanken Grotesk', 'Plus Jakarta Sans', serif;
+      font-style: italic;
+    }
+
+    /* Subtle paper texture grain simulation */
+    .bg-grain {
+      background-image: radial-gradient(rgba(47, 66, 46, var(--grain-opacity)) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+    
+    .hairline-border {
+      border-color: var(--border-hairline);
+    }
+    
+    .hero-cutout-shadow {
+      filter: drop-shadow(0 25px 30px rgba(18, 24, 18, 0.32));
+    }
+
+    /* Hide native OS pointer on desktop fine-pointer devices */
+    @media (pointer: fine) {
+      *, *::before, *::after {
+        cursor: none !important;
+      }
+    }
+
+    /* --- Interactive Difference Cursor (Refined Editorial Scale) --- */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      background: #ffffff;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s ease, opacity 0.2s ease;
+      z-index: 2147483647;
+      opacity: 0;
+      will-change: transform, left, top;
+    }
+    .cursor.expand {
+      transform: translate(-50%, -50%) scale(1.45);
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .cursor.active {
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #ffffff;
+    }
+    @media (pointer: coarse) {
+      .cursor { display: none !important; }
+    }
+
+    /* --- Typewriter Blink Caret --- */
+    .typewriter {
+      border-right: 2px solid var(--text-main);
+      padding-right: 3px;
+      animation: blink-caret 0.8s step-end infinite;
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: var(--text-main); }
+    }
+
+    /* Draggable Avatar Grayscale to Full Color on Hover */
+    #hero-draggable-avatar img {
+      filter: grayscale(100%) contrast(1.05);
+      transition: filter 0.65s var(--editorial-ease);
+    }
+    #hero-draggable-avatar:hover img,
+    #hero-draggable-avatar:active img {
+      filter: grayscale(0%) contrast(1.05);
+    }
+
+    @keyframes heroLineUp {
+      0% { opacity: 0; transform: translateY(115%); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInSlideUp {
+      0% { opacity: 0; transform: translateY(32px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatSubtle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.3deg); }
+    }
+
+    .animate-hero-line-1 { animation: heroLineUp 1.25s var(--editorial-ease) 0.15s backwards; }
+    .animate-hero-line-2 { animation: heroLineUp 1.25s var(--editorial-ease) 0.32s backwards; }
+    .animate-hero-line-3 { animation: heroLineUp 1.25s var(--editorial-ease) 0.48s backwards; }
+
+    .hero-fade-in-left { animation: fadeInSlideUp 1.1s var(--editorial-ease) 0.2s backwards; }
+    .hero-fade-in-right { animation: fadeInSlideUp 1.1s var(--editorial-ease) 0.4s backwards; }
+    .hero-cutout-wrapper { animation: fadeInSlideUp 1.4s var(--editorial-ease) 0.5s backwards; }
+    .hero-float-idle { animation: floatSubtle 7s ease-in-out infinite; }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.9s var(--editorial-ease), transform 0.9s var(--editorial-ease);
+      will-change: opacity, transform;
+    }
+    .reveal-on-scroll.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .work-card-lift {
+      transition: transform 0.65s var(--editorial-smooth), box-shadow 0.65s var(--editorial-smooth);
+    }
+    .work-card-lift:hover {
+      transform: translateY(-6px);
+    }
+
+    .interactive-pill-btn {
+      transition: all 0.35s var(--editorial-smooth);
+    }
+    .interactive-pill-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 28px -6px rgba(18, 24, 18, 0.26);
+    }
+
+    .nav-editorial-link {
+      position: relative;
+    }
+    .nav-editorial-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: currentColor;
+      transition: width 0.35s var(--editorial-smooth);
+    }
+    .nav-editorial-link:hover::after {
+      width: 100%;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--text-main);
+      outline-offset: 3px;
+    }
+
+    #ink-bleed-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+    }
+    #ink-bleed-canvas.active {
+      opacity: 1;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(56, 76, 53, 0.08);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(56, 76, 53, 0.28);
+      border-radius: 9999px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .animate-hero-line-1,
+      .animate-hero-line-2,
+      .animate-hero-line-3,
+      .hero-fade-in-left,
+      .hero-fade-in-right,
+      .hero-cutout-wrapper,
+      .hero-float-idle,
+      .reveal-on-scroll {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            celadon: {
+              DEFAULT: 'var(--bg-canvas)',
+              light: '#E6EBDC',
+              dark: 'var(--bg-card)',
+              surface: 'var(--bg-surface)',
+              parchment: '#f6fcea'
+            },
+            moss: {
+              DEFAULT: 'var(--text-main)',
+              dark: 'var(--ink-rim)',
+              deep: '#1D2A1B',
+              muted: 'var(--text-muted)',
+              subtle: 'var(--text-subtle)'
+            }
+          },
+          fontFamily: {
+            display: ['"Barlow Condensed"', '"Anton"', 'Impact', 'sans-serif'],
+            editorial: ['"Syne"', 'sans-serif'],
+            sans: ['"Hanken Grotesk"', '"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'ui-monospace', 'monospace']
+          },
+          letterSpacing: {
+            compressed: '-0.03em',
+            tightest: '-0.05em'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-celadon text-moss font-sans antialiased selection:bg-moss selection:text-celadon bg-grain min-h-screen relative flex flex-col justify-between overflow-x-hidden transition-colors duration-300">
+  <!-- Custom Interactive Cursor -->
+  <div class="cursor" id="custom-cursor" aria-hidden="true"></div>
+
+  <!-- Ink Bleed Animation Canvas Overlay -->
+  <canvas aria-hidden="true" id="ink-bleed-canvas"></canvas>
+
+  <!-- Skip to Content Link for A11y -->
+  <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-moss text-celadon rounded-full text-xs uppercase font-mono tracking-wider shadow-lg" href="#hero">
+    Skip to main content
+  </a>
+
+  <!-- BEGIN: MainHeader -->
+  <header class="sticky top-0 z-50 bg-celadon/90 backdrop-blur-md border-b hairline-border transition-all duration-300" data-purpose="site-navigation-header">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 py-3 sm:py-3.5 flex items-center justify-between">
+      <!-- Brand Logo Mark with Developer Tag -->
+      <a aria-label="Harjit Singh Home" class="group flex items-center gap-3 py-1" href="#hero">
+        <div class="w-6 h-6 grid grid-cols-2 gap-1 place-items-center transition-transform duration-500 group-hover:rotate-45" data-purpose="minimalist-logo-mark">
+          <span class="w-2 h-2 rounded-full bg-moss transition-transform duration-300 group-hover:scale-90"></span>
+          <span class="w-2 h-2 rounded-full bg-moss transition-transform duration-300 group-hover:scale-90"></span>
+          <span class="w-2 h-2 rounded-full bg-moss transition-transform duration-300 group-hover:scale-90"></span>
+          <span class="w-2 h-2 rounded-full bg-moss transition-transform duration-300 group-hover:scale-90"></span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-editorial text-sm font-bold tracking-wider uppercase text-moss transition-opacity group-hover:opacity-80">Harjit Singh</span>
+          <span class="text-[9px] font-mono tracking-widest text-moss/70 uppercase">@Harrykalsi24</span>
+        </div>
+      </a>
+
+      <!-- Desktop Editorial Navigation Links -->
+      <nav aria-label="Main Navigation" class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-widest text-moss/80" data-purpose="primary-navigation">
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#projects">Projects</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#stack">Stack</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#stance">Stance</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#analytics">GitHub Metrics</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="#contact">Contact</a>
+      </nav>
+
+      <!-- Right Action Items: Ink Bleed Theme Changer + GitHub + Mobile Toggle -->
+      <div class="flex items-center gap-2.5 sm:gap-3" data-purpose="header-action-button">
+        <!-- Ink Bleed Theme Toggle Button (with Sun/Moon Morphing) -->
+        <button aria-label="Toggle Dark / Light Theme" aria-pressed="false" class="group relative min-h-[44px] min-w-[44px] px-3 py-2.5 rounded-full border hairline-border flex items-center justify-center text-moss hover:bg-celadon-surface transition-all duration-300 shadow-sm active:scale-95" id="theme-toggle" title="Ink-bleed theme switch (Hotkey: T)" type="button">
+          <!-- Light Mode Sun Icon -->
+          <svg class="w-4 h-4 transition-transform duration-500 group-hover:rotate-45 dark:hidden" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41"></path>
+          </svg>
+          <!-- Dark Mode Moon Icon -->
+          <svg class="w-4 h-4 transition-transform duration-500 group-hover:-rotate-12 hidden dark:block" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a class="group interactive-pill-btn min-h-[44px] px-4 sm:px-5 py-2.5 rounded-full border hairline-border text-xs font-medium uppercase tracking-wider text-moss hover:bg-moss hover:text-celadon transition-all duration-300 flex items-center gap-1.5 shadow-sm active:scale-95" href="https://github.com/Harrykalsi24" rel="noreferrer" target="_blank">
+          <span>GitHub</span>
+          <span aria-hidden="true" class="text-xs transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
+        </a>
+        
+        <!-- Mobile Navigation Toggle Button -->
+        <button aria-controls="mobile-nav" aria-expanded="false" aria-label="Toggle Navigation Menu" class="md:hidden min-h-[44px] min-w-[44px] flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-full border hairline-border hover:bg-celadon-surface transition-colors" id="mobile-menu-btn" type="button">
+          <span class="w-5 h-0.5 bg-moss transition-transform origin-center" id="menu-bar-1"></span>
+          <span class="w-5 h-0.5 bg-moss transition-transform origin-center" id="menu-bar-2"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Overlay Navigation -->
+    <div aria-hidden="true" class="hidden md:hidden fixed inset-x-0 top-[73px] bg-celadon/98 backdrop-blur-xl border-b hairline-border shadow-xl px-6 py-8 transition-all duration-300" id="mobile-nav">
+      <nav aria-label="Mobile Navigation" class="flex flex-col space-y-6 text-sm font-semibold uppercase tracking-widest text-moss">
+        <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#projects">
+          <span>Featured Projects</span>
+          <span class="font-mono text-xs text-moss/60">01</span>
+        </a>
+        <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#stack">
+          <span>Technical Stack</span>
+          <span class="font-mono text-xs text-moss/60">02</span>
+        </a>
+        <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#stance">
+          <span>Engineering Stance</span>
+          <span class="font-mono text-xs text-moss/60">03</span>
+        </a>
+        <a class="mobile-nav-link border-b hairline-border pb-3 flex items-center justify-between" href="#analytics">
+          <span>GitHub Metrics &amp; Graph</span>
+          <span class="font-mono text-xs text-moss/60">04</span>
+        </a>
+        <a class="mobile-nav-link pt-2 flex items-center justify-between text-moss-muted" href="#contact">
+          <span>Get in Touch</span>
+          <span class="font-mono text-xs">↗</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+  <!-- END: MainHeader -->
+
+  <main class="flex-grow">
+    <!-- BEGIN: HeroSection -->
+    <section class="relative flex flex-col justify-between max-w-[1440px] mx-auto px-6 md:px-12 pt-0 sm:pt-1 pb-8 sm:pb-10 overflow-visible scroll-mt-16" data-purpose="portfolio-hero" id="hero">
+      <!-- Top / Center Canvas Layout Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 mt-1 sm:mt-2 mb-6 sm:mb-8" id="hero-interactive-canvas">
+        <!-- Left Column: Context, Value Proposition & CTA -->
+        <div class="lg:col-span-3 flex flex-col justify-center space-y-5 sm:space-y-6 z-20 hero-fade-in-left order-2 lg:order-1 lg:pr-4" data-purpose="hero-left-column">
+          <!-- Eyebrow Tagline -->
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+            <span class="text-[10px] tracking-[0.22em] uppercase font-semibold text-moss/80 font-mono">
+              OPEN TO WORK • SOFTWARE DEV
+            </span>
+          </div>
+          <!-- Main Left Headings -->
+          <h1 class="text-3xl sm:text-4xl lg:text-[42px] leading-[1.08] font-editorial font-bold text-moss tracking-tight">
+            Harjit<br>Singh
+          </h1>
+          <!-- Dynamic Typewriter Subtitle -->
+          <div class="h-6 sm:h-7 flex items-center -mt-2">
+            <span class="font-mono text-xs sm:text-sm font-semibold tracking-wider text-moss uppercase flex items-center">
+              <span class="text-emerald-600 font-bold mr-1.5">&gt;</span>
+              <span id="typewriter" class="typewriter">Software Developer</span>
+            </span>
+          </div>
+          <!-- Bio Paragraph from GitHub Profile -->
+          <p class="text-moss/85 text-sm leading-relaxed max-w-xs font-normal">
+            Solve. Shape. Simplify. Full-stack web &amp; mobile engineer specializing in modular architectures, reactive interfaces, and network systems.
+          </p>
+          <!-- Primary Pill Actions (Clean Non-Colliding Layout) -->
+          <div class="flex flex-wrap sm:flex-nowrap lg:flex-wrap xl:flex-nowrap items-center gap-2.5 pt-2 max-w-xs">
+            <a class="group interactive-pill-btn min-h-[44px] inline-flex items-center gap-2.5 bg-moss hover:bg-moss-dark text-celadon px-5 py-3 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-300 shadow-md active:scale-95 whitespace-nowrap" href="#projects">
+              <span>View Projects</span>
+              <span aria-hidden="true" class="w-5 h-5 rounded-full bg-celadon/15 flex items-center justify-center text-[10px] transition-transform duration-300 ease-out group-hover:translate-x-1.5">→</span>
+            </a>
+            <a class="group interactive-pill-btn min-h-[44px] inline-flex items-center gap-2 border hairline-border px-4 py-3 rounded-full text-xs font-medium tracking-wider uppercase text-moss hover:bg-celadon-surface transition-all duration-300 active:scale-95 whitespace-nowrap" href="mailto:harjit2003singh@gmail.com">
+              <span>Email</span>
+              <span aria-hidden="true" class="text-xs">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Center Column: Monumental Giant Condensed Typography Stack (Overflow Visible + Breathing Room) -->
+        <div class="lg:col-span-6 relative flex items-center justify-center min-h-0 select-none order-1 lg:order-2 overflow-visible px-2 sm:px-4 py-0" data-purpose="hero-center-visual-block" id="hero-center-container">
+          <!-- Massive 3-Tier Layered Condensed Headline: Solve. Shape. Simplify. (Center Aligned) -->
+          <div class="display-condensed text-[54px] min-[400px]:text-[66px] sm:text-[108px] md:text-[142px] lg:text-[168px] xl:text-[196px] font-black tracking-normal text-moss text-center flex flex-col items-center justify-center leading-[0.82] w-full mx-auto z-0 select-none overflow-visible pt-0 pb-1" id="hero-headline-group">
+            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
+              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-1 will-change-transform px-2 sm:px-4">SOLVE.</span>
+            </span>
+            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
+              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-2 will-change-transform px-2 sm:px-4">SHAPE.</span>
+            </span>
+            <span class="block overflow-visible w-full py-1 text-center flex justify-center">
+              <span class="block text-center mx-auto transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-3 will-change-transform px-2 sm:px-4">SIMPLIFY.</span>
+            </span>
+          </div>
+
+          <!-- Cutout / Silhouette Avatar Layered Figure (Dynamic Draggable Component) -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10 hero-cutout-wrapper overflow-visible" data-purpose="hero-editorial-subject-cutout" id="hero-parallax-art">
+            <div class="relative flex items-center justify-center hero-float-idle" id="hero-avatar-float-wrap">
+              <!-- Rounded avatar badge with tactile jelly spring dynamics -->
+              <div id="hero-draggable-avatar" class="group/avatar w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-all duration-300 hover:shadow-2xl hover:border-moss/60 hover:scale-[1.02]" title="Drag me!">
+                <img alt="Harjit Singh GitHub avatar" class="w-full h-full object-cover rounded-full contrast-[1.05] grayscale group-hover/avatar:grayscale-0 group-active/avatar:grayscale-0 transition-all duration-700 pointer-events-none select-none" draggable="false" fetchpriority="high" loading="eager" src="https://avatars.githubusercontent.com/u/166169358?v=4">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Micro Identifiers & Domain Focus -->
+        <div class="lg:col-span-3 flex flex-col justify-center space-y-4 sm:space-y-6 lg:pl-8 z-20 hero-fade-in-right order-3" data-purpose="hero-right-services-column">
+          <!-- Domain Feature 01 -->
+          <a class="group flex items-center justify-between p-3.5 -mx-3.5 rounded-xl border-b hairline-border hover:bg-celadon-surface/60 transition-all duration-300" href="#stack">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full border hairline-border flex items-center justify-center transition-all duration-300 group-hover:border-moss group-hover:scale-105 group-hover:bg-celadon-surface">
+                <!-- Code bracket icon -->
+                <svg aria-hidden="true" class="w-4 h-4 text-moss stroke-[1.5] transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-moss transition-colors group-hover:text-moss-dark">Full-Stack &amp; Mobile</span>
+                <span class="text-[10px] text-moss/70 uppercase tracking-widest font-mono">React • TS • Tailwind</span>
+              </div>
+            </div>
+            <span aria-hidden="true" class="text-xs text-moss/50 font-mono transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-moss">↗</span>
+          </a>
+
+          <!-- Domain Feature 02 -->
+          <a class="group flex items-center justify-between p-3.5 -mx-3.5 rounded-xl border-b hairline-border hover:bg-celadon-surface/60 transition-all duration-300" href="#stack">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full border hairline-border flex items-center justify-center transition-all duration-300 group-hover:border-moss group-hover:scale-105 group-hover:bg-celadon-surface">
+                <!-- Terminal / CLI icon -->
+                <svg aria-hidden="true" class="w-4 h-4 text-moss stroke-[1.5] transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <polyline points="4 17 10 11 4 5"></polyline>
+                  <line x1="12" x2="20" y1="19" y2="19"></line>
+                </svg>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-moss transition-colors group-hover:text-moss-dark">Systems &amp; Languages</span>
+                <span class="text-[10px] text-moss/70 uppercase tracking-widest font-mono">Python • C++ • Java</span>
+              </div>
+            </div>
+            <span aria-hidden="true" class="text-xs text-moss/50 font-mono transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-moss">↗</span>
+          </a>
+
+          <!-- Domain Feature 03 -->
+          <a class="group flex items-center justify-between p-3.5 -mx-3.5 rounded-xl border-b hairline-border hover:bg-celadon-surface/60 transition-all duration-300" href="#stack">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full border hairline-border flex items-center justify-center transition-all duration-300 group-hover:border-moss group-hover:scale-105 group-hover:bg-celadon-surface">
+                <!-- Network / Cloud icon -->
+                <svg aria-hidden="true" class="w-4 h-4 text-moss stroke-[1.5] transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect height="8" rx="2" width="20" x="2" y="2"></rect>
+                  <rect height="8" rx="2" width="20" x="2" y="14"></rect>
+                  <line x1="6" x2="6.01" y1="6" y2="6"></line>
+                  <line x1="6" x2="6.01" y1="18" y2="18"></line>
+                </svg>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-moss transition-colors group-hover:text-moss-dark">Networks &amp; Cloud</span>
+                <span class="text-[10px] text-moss/70 uppercase tracking-widest font-mono">AWS • Linux • Routing</span>
+              </div>
+            </div>
+            <span aria-hidden="true" class="text-xs text-moss/50 font-mono transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-moss">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Bottom Baseline Coordinates & Status Indicator -->
+      <div class="pt-8 sm:pt-10 flex flex-col sm:flex-row items-center justify-between border-t hairline-border text-[11px] tracking-wider uppercase text-moss/70 gap-4" data-purpose="hero-footer-status">
+        <div class="flex items-center gap-6">
+          <span>GitHub: @Harrykalsi24</span>
+          <span class="hidden md:inline-block w-1.5 h-1.5 rounded-full bg-moss/30"></span>
+          <span class="hidden md:inline-block font-mono">11+ Repositories • 55+ Commits</span>
+        </div>
+        <div class="flex items-center gap-3 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+          <span class="text-moss">Status: Open to Full-Stack &amp; Systems Roles</span>
+        </div>
+      </div>
+    </section>
+    <!-- END: HeroSection -->
+
+    <!-- BEGIN: PhilosophySection (Engineering Stance) -->
+    <section class="border-t hairline-border bg-celadon-surface/50 pt-8 md:pt-12 pb-14 md:pb-20 reveal-on-scroll scroll-mt-20" data-purpose="engineering-philosophy" id="stance">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-start">
+          <!-- Sticky section label -->
+          <div class="lg:col-span-3">
+            <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-moss/70 block">
+              // Engineering Stance
+            </span>
+            <h2 class="text-2xl font-editorial font-bold text-moss mt-3">Precision &amp; Rigor</h2>
+          </div>
+          <!-- Main Manifesto Text -->
+          <div class="lg:col-span-9 space-y-10">
+            <p class="text-2xl sm:text-3xl md:text-4xl leading-tight font-editorial font-medium text-moss">
+              "We reject brittle, ephemeral micro-trends in favor of <span class="editorial-italic font-normal">modular resilience</span>, strict type-safety, and systems architecture engineered to scale gracefully."
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t hairline-border text-sm leading-relaxed text-moss/80">
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">01 / Clean Architecture</h3>
+                <p>Strong emphasis on readability, maintainability, type contracts, and predictable data flow from database layer to client UI.</p>
+              </div>
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">02 / Low-Latency Systems</h3>
+                <p>Performance is a primary feature. Optimizing network calls, minimizing bundle weight, and delivering 60 FPS fluid rendering.</p>
+              </div>
+              <div class="transition-transform duration-300 hover:-translate-y-1">
+                <h3 class="font-bold text-moss mb-2 uppercase text-xs tracking-wider font-mono">03 / Systems &amp; Networking</h3>
+                <p>Solid computer networking background (TCP/IP, subnetting, reverse proxies, Linux administration) paired with modern cloud deploy pipelines.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: PhilosophySection -->
+
+    <!-- BEGIN: SelectedProjects -->
+    <section class="py-0 pt-8 md:pt-12 pb-14 md:pb-20 max-w-[1440px] mx-auto px-6 md:px-12 scroll-mt-20" data-purpose="portfolio-selected-projects" id="projects">
+      <!-- Section Title Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 pb-4 border-b hairline-border gap-6 reveal-on-scroll">
+        <div>
+          <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-moss/70 block mb-2">Curated Repositories &amp; Deployments</span>
+          <h2 class="display-condensed text-5xl sm:text-6xl md:text-8xl tracking-tight text-moss">FEATURED WORKS</h2>
+        </div>
+        <p class="text-xs uppercase tracking-widest text-moss/80 max-w-xs md:text-right font-mono">
+          Full-Stack Web • Mobile UI • Atmospheric APIs • Canvas Physics
+        </p>
+      </div>
+
+      <!-- Works Grid: Exactly 3 Projects in a Single Row on Desktop -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <!-- Project 01: Anipaca -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('anipaca')">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/50 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">Web Streaming</span>
+                <span class="font-mono text-xs text-moss/70">Production</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// Next.js • TS • Media</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Anipaca Streaming</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">High-performance media web app with dynamic search, responsive player, and catalog discovery.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2025
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                Anipaca
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">Modern Streaming Web Application</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+
+        <!-- Project 02: Foggy-Weather -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('foggy')" style="transition-delay: 100ms;">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/60 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">Telemetry</span>
+                <span class="font-mono text-xs text-moss/70">Live Demo</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// TypeScript • React • Geolocation</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Foggy Weather</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">Atmospheric forecast web app utilizing OpenWeather API, geolocation coordinates, and micro-climate metrics.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2024
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                Foggy Weather
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">Atmospheric Forecast Telemetry App</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+
+        <!-- Project 03: Perfume-E-Comm -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('perfume')" style="transition-delay: 200ms;">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/50 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">E-Commerce</span>
+                <span class="font-mono text-xs text-moss/70">Live Demo</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// HTML5 • Tailwind CSS • Vanilla JS</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Perfume Boutique</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">Luxury, mobile-first e-commerce landing experience built for an artisanal fragrance atelier with cart architecture.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2024
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                Perfume E-Commerce
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">Luxury Artisanal Boutique Storefront</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+
+        <!-- Project 04: Ecal Financial Engine -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('ecal')">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/55 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">Finance Tool</span>
+                <span class="font-mono text-xs text-moss/70">Open Source</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// JavaScript • Financial Math • CSS3</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Ecal Loan &amp; EMI</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">Interactive financial calculation engine and mortgage loan analyzer providing amortization breakdowns.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2024
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                Ecal Calculator
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">Financial Model &amp; Amortization Analyzer</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+
+        <!-- Project 05: Snake-Game -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('snake')" style="transition-delay: 100ms;">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/60 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">Canvas Game</span>
+                <span class="font-mono text-xs text-moss/70">Playable</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// HTML5 Canvas • JavaScript Physics</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Canvas Snake</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">Nostalgic arcade game built with native HTML5 Canvas context, discrete collision mechanics, and score tracking.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2024
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                Snake Canvas Game
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">HTML5 Canvas Engine &amp; Collision Physics</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+
+        <!-- Project 06: LoginUI -->
+        <article class="group cursor-pointer flex flex-col work-card-lift reveal-on-scroll" data-purpose="project-card" onclick="openProjectModal('loginui')" style="transition-delay: 200ms;">
+          <div class="relative overflow-hidden rounded-2xl bg-celadon-surface aspect-[16/10] mb-5 hairline-border border shadow-sm group-hover:shadow-xl transition-all duration-700">
+            <div class="w-full h-full bg-gradient-to-br from-celadon-surface via-celadon-dark/50 to-celadon-surface p-6 flex flex-col justify-between text-moss transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-full border hairline-border bg-celadon/80 text-moss uppercase tracking-widest shadow-xs">Interface Design</span>
+                <span class="font-mono text-xs text-moss/70">Live Demo</span>
+              </div>
+              <div class="space-y-1.5">
+                <span class="font-mono text-[11px] text-moss/70 uppercase tracking-widest">// CSS3 • Video Background • Glassmorphism</span>
+                <h4 class="text-xl font-editorial font-bold text-moss">Interactive Auth UI</h4>
+                <p class="text-xs text-moss/80 line-clamp-2">Sleek authentication interface featuring dynamic video backgrounds, glassmorphism, and responsive states.</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono uppercase pt-2 text-moss font-semibold">
+                <span class="underline underline-offset-4">Explore Details</span>
+                <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 bg-celadon/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase text-moss border hairline-border transition-transform duration-300 group-hover:scale-105 shadow-xs">
+              2024
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline pt-1">
+            <div>
+              <h3 class="text-xl font-editorial font-bold text-moss group-hover:text-moss-muted transition-colors">
+                LoginUI
+              </h3>
+              <p class="text-xs text-moss/70 mt-1 uppercase tracking-wider font-mono">Dynamic Video Auth &amp; Glassmorphism</p>
+            </div>
+            <span aria-hidden="true" class="text-xl font-editorial transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1.5">↗</span>
+          </div>
+        </article>
+      </div>
+    </section>
+    <!-- END: SelectedProjects -->
+
+    <!-- BEGIN: TechStack (Architectural Engineering Matrix - Redesigned) -->
+    <section class="border-t hairline-border pt-8 md:pt-12 pb-14 md:pb-20 bg-celadon-surface/40 reveal-on-scroll scroll-mt-20" data-purpose="tech-stack-overview" id="stack">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        <!-- Section Header with Meta Telemetry -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 sm:mb-10 pb-4 border-b hairline-border gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <span class="text-[11px] font-mono uppercase tracking-[0.25em] text-moss/70 block">// Technical Capabilities &amp; Architecture</span>
+            </div>
+            <h2 class="display-condensed text-5xl sm:text-7xl tracking-tight text-moss">ENGINEERING STACK</h2>
+          </div>
+          
+          <!-- Category Quick Filter Pills -->
+          <div class="flex flex-wrap items-center gap-2" id="stack-filter-bar">
+            <button class="interactive-pill-btn stack-filter-btn px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider bg-moss text-celadon border hairline-border active transition-all" data-filter="all" type="button">
+              All Domains (18)
+            </button>
+            <button class="interactive-pill-btn stack-filter-btn px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider bg-celadon text-moss border hairline-border hover:bg-celadon-surface transition-all" data-filter="client" type="button">
+              Client &amp; Mobile
+            </button>
+            <button class="interactive-pill-btn stack-filter-btn px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider bg-celadon text-moss border hairline-border hover:bg-celadon-surface transition-all" data-filter="systems" type="button">
+              Systems &amp; Core
+            </button>
+            <button class="interactive-pill-btn stack-filter-btn px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider bg-celadon text-moss border hairline-border hover:bg-celadon-surface transition-all" data-filter="infra" type="button">
+              Cloud &amp; DevOps
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-Column Engineering Matrix Pillars -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="stack-pillars-grid">
+          <!-- Pillar 01: Client, UI & Mobile Runtimes -->
+          <div class="stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="client">
+            <div class="space-y-6">
+              <div class="flex items-start justify-between">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-moss/60">[SYS.01] • USER INTERFACES</span>
+                  <h3 class="font-editorial text-2xl font-bold text-moss group-hover:text-moss-dark transition-colors">Client &amp; Mobile Runtimes</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl border hairline-border bg-celadon-surface flex items-center justify-center text-moss transition-transform duration-300 group-hover:scale-110 group-hover:bg-celadon">
+                  <svg aria-hidden="true" class="w-6 h-6 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect height="16" rx="2" width="18" x="3" y="4"></rect>
+                    <line x1="8" x2="16" y1="2" y2="2"></line>
+                    <line x1="12" x2="12" y1="20" y2="22"></line>
+                  </svg>
+                </div>
+              </div>
+              
+              <p class="text-xs text-moss/80 leading-relaxed font-normal">
+                Engineering reactive web clients and mobile applications prioritizing deterministic state trees, sub-100ms render cycles, and responsive layout fidelity.
+              </p>
+
+              <!-- Detailed Tech Specs Grid -->
+              <div class="space-y-2.5 pt-2">
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">TypeScript &amp; JavaScript</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Primary</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">React &amp; Next.js</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">SSR • App Router</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Tailwind CSS</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Tokens • Mobile</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">HTML5 Canvas &amp; WebGL</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">GPU Shaders</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Capacitor Native</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Mobile iOS/Android</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Architectural Pillar Footer Badge -->
+            <div class="pt-4 border-t hairline-border flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-moss/70">
+              <span>Standard: Strict Type-Safety</span>
+              <span>100% Mobile Ready</span>
+            </div>
+          </div>
+
+          <!-- Pillar 02: Systems, Languages & Core Computation -->
+          <div class="stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="systems">
+            <div class="space-y-6">
+              <div class="flex items-start justify-between">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-moss/60">[SYS.02] • CORE LOGIC</span>
+                  <h3 class="font-editorial text-2xl font-bold text-moss group-hover:text-moss-dark transition-colors">Languages &amp; Systems</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl border hairline-border bg-celadon-surface flex items-center justify-center text-moss transition-transform duration-300 group-hover:scale-110 group-hover:bg-celadon">
+                  <svg aria-hidden="true" class="w-6 h-6 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <polyline points="4 17 10 11 4 5"></polyline>
+                    <line x1="12" x2="20" y1="19" y2="19"></line>
+                  </svg>
+                </div>
+              </div>
+              
+              <p class="text-xs text-moss/80 leading-relaxed font-normal">
+                Developing deterministic algorithmic solutions, low-latency computational procedures, object-oriented design patterns, and contract-first REST APIs.
+              </p>
+
+              <!-- Detailed Tech Specs Grid -->
+              <div class="space-y-2.5 pt-2">
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Python 3.x</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Async • Automation</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">C / C++</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Memory &amp; Pointers</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Java</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">OOP Patterns</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">RESTful API Architecture</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">JSON Endpoints</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Data Structures &amp; Algos</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">O(1) &amp; O(n log n)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Architectural Pillar Footer Badge -->
+            <div class="pt-4 border-t hairline-border flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-moss/70">
+              <span>Standard: Algorithmic Rigor</span>
+              <span>Clean Code Principles</span>
+            </div>
+          </div>
+
+          <!-- Pillar 03: Cloud Infrastructure, Networks & DevOps -->
+          <div class="stack-pillar-card group bg-celadon border hairline-border rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-8 work-card-lift transition-all duration-500 hover:border-moss/40 hover:shadow-xl" data-category="infra">
+            <div class="space-y-6">
+              <div class="flex items-start justify-between">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-moss/60">[SYS.03] • INFRASTRUCTURE</span>
+                  <h3 class="font-editorial text-2xl font-bold text-moss group-hover:text-moss-dark transition-colors">Cloud &amp; DevOps</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl border hairline-border bg-celadon-surface flex items-center justify-center text-moss transition-transform duration-300 group-hover:scale-110 group-hover:bg-celadon">
+                  <svg aria-hidden="true" class="w-6 h-6 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect height="8" rx="2" width="20" x="2" y="2"></rect>
+                    <rect height="8" rx="2" width="20" x="2" y="14"></rect>
+                    <line x1="6" x2="6.01" y1="6" y2="6"></line>
+                    <line x1="6" x2="6.01" y1="18" y2="18"></line>
+                  </svg>
+                </div>
+              </div>
+              
+              <p class="text-xs text-moss/80 leading-relaxed font-normal">
+                Deploying high-availability infrastructure across cloud providers and Linux machines, orchestrating CI/CD pipelines, and analyzing packet telemetry.
+              </p>
+
+              <!-- Detailed Tech Specs Grid -->
+              <div class="space-y-2.5 pt-2">
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">AWS Cloud</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">EC2 • S3 • IAM</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Linux Administration</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Debian/Ubuntu • Systemd</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Computer Networking</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">TCP/IP • DNS • Routing</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Git &amp; GitHub Actions</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">Automated CI/CD</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-celadon-surface/80 border hairline-border hover:bg-celadon-surface transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="text-xs font-mono font-semibold text-moss">Bash &amp; Shell Scripting</span>
+                  </div>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-moss/10 text-moss border border-moss/15 uppercase">CLI Tooling</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Architectural Pillar Footer Badge -->
+            <div class="pt-4 border-t hairline-border flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-moss/70">
+              <span>Standard: Immutable Deploys</span>
+              <span>Zero Downtime</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Architectural Principles Banner -->
+        <div class="mt-14 pt-8 border-t hairline-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="p-4 rounded-2xl bg-celadon/50 border hairline-border space-y-1.5">
+            <span class="text-[10px] font-mono font-bold text-moss uppercase tracking-widest block">01 / Type-Safety First</span>
+            <p class="text-xs text-moss/75 leading-relaxed font-normal">Strict compile-time validation eliminating runtime null and shape errors across the entire codebase.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-celadon/50 border hairline-border space-y-1.5">
+            <span class="text-[10px] font-mono font-bold text-moss uppercase tracking-widest block">02 / Minimal Overhead</span>
+            <p class="text-xs text-moss/75 leading-relaxed font-normal">Zero unnecessary client bundle bloat, targeting pure native web standards and GPU-assisted rendering.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-celadon/50 border hairline-border space-y-1.5">
+            <span class="text-[10px] font-mono font-bold text-moss uppercase tracking-widest block">03 / Network Resilience</span>
+            <p class="text-xs text-moss/75 leading-relaxed font-normal">Graceful API degradation, optimistic UI updates, and fault-tolerant network retries built in.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-celadon/50 border hairline-border space-y-1.5">
+            <span class="text-[10px] font-mono font-bold text-moss uppercase tracking-widest block">04 / Automated Lifecycle</span>
+            <p class="text-xs text-moss/75 leading-relaxed font-normal">Repeatable deployment automation via GitHub Actions and disciplined trunk-based version control.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: TechStack -->
+
+    <!-- BEGIN: GitHubAnalytics & Activities (Redesigned with Live Snake Graph & Feed) -->
+    <section class="border-t hairline-border pt-8 md:pt-12 pb-14 md:pb-20 bg-celadon reveal-on-scroll scroll-mt-20" data-purpose="github-live-analytics" id="analytics">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b hairline-border gap-4">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-[0.25em] text-moss/70 block mb-2">// Real-time Telemetry &amp; Open Source</span>
+            <h2 class="display-condensed text-5xl sm:text-7xl tracking-tight text-moss">GITHUB METRICS &amp; ACTIVITY</h2>
+          </div>
+          <div class="flex items-center gap-4 text-xs font-mono uppercase tracking-wider text-moss/70">
+            <span>Profile Views: Active</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-moss/40"></span>
+            <span class="text-moss font-semibold">@Harrykalsi24</span>
+          </div>
+        </div>
+
+        <!-- 1. Live Contribution Grid Snake Animation -->
+        <div class="rounded-3xl border hairline-border bg-celadon-surface/50 p-6 sm:p-8 mb-10 shadow-sm relative overflow-hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b hairline-border gap-3 mb-6">
+            <div class="flex items-center gap-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <span class="font-mono text-xs uppercase tracking-widest text-moss font-semibold">Live Contribution Graph &amp; Animated Commit Flow</span>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-mono uppercase text-moss/70">
+              <span>Year: 2024 — 2026</span>
+              <a class="hover:text-moss underline underline-offset-4 flex items-center gap-1" href="https://github.com/Harrykalsi24" rel="noreferrer" target="_blank">
+                <span>View Full Grid</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="w-full overflow-x-auto custom-scrollbar py-3 flex items-center justify-center">
+            <img alt="GitHub Contribution Snake Animation" class="w-full max-w-4xl min-w-[720px] rounded-xl filter contrast-[1.05]" loading="lazy" src="https://raw.githubusercontent.com/Harrykalsi24/Harrykalsi24/output/github-contribution-grid-snake.svg">
+          </div>
+        </div>
+
+        <!-- 2. Dual Analytics Cards + Real-time Recent Activity Log -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <!-- Left: Analytics Widgets (8 Cols) -->
+          <div class="lg:col-span-7 flex flex-col space-y-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <!-- Commit & Repo Stats Card -->
+              <div class="bg-celadon-surface/60 border hairline-border rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3 border-b hairline-border pb-2">
+                  <span class="text-[11px] font-mono uppercase tracking-wider text-moss font-semibold">Repository Metrics</span>
+                  <span class="text-[10px] font-mono text-moss/60">Verified</span>
+                </div>
+                <div class="flex items-center justify-center py-2">
+                  <img alt="Harjit Singh GitHub Stats" class="w-full rounded-xl" loading="lazy" src="https://github-readme-stats-fast.vercel.app/api?username=Harrykalsi24&show_icons=true&include_all_commits=true&count_private=true&theme=nord&border_color=384C35&title_color=384C35&icon_color=384C35&text_color=243422&bg_color=DFE5D3&hide_border=false">
+                </div>
+              </div>
+
+              <!-- Language Breakdown Card -->
+              <div class="bg-celadon-surface/60 border hairline-border rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3 border-b hairline-border pb-2">
+                  <span class="text-[11px] font-mono uppercase tracking-wider text-moss font-semibold">Language Distribution</span>
+                  <span class="text-[10px] font-mono text-moss/60">Ranked</span>
+                </div>
+                <div class="flex items-center justify-center py-2">
+                  <img alt="Harjit Singh Top Languages" class="w-full rounded-xl" loading="lazy" src="https://github-readme-stats-fast.vercel.app/api/top-langs?username=Harrykalsi24&layout=compact&langs_count=8&theme=nord&border_color=384C35&title_color=384C35&icon_color=384C35&text_color=243422&bg_color=DFE5D3&hide_border=false">
+                </div>
+              </div>
+            </div>
+
+            <!-- Consistency Streak Card -->
+            <div class="bg-celadon-surface/60 border hairline-border rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-3 border-b hairline-border pb-2">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-moss font-semibold">Contribution Streak &amp; Momentum</span>
+                <span class="text-[10px] font-mono text-moss/60">Continuous</span>
+              </div>
+              <div class="flex items-center justify-center py-2">
+                <img alt="Harjit Singh Contribution Streak" class="w-full max-w-lg rounded-xl" loading="lazy" src="https://streak-stats.demolab.com/?user=Harrykalsi24&theme=nord&ring=384C35&fire=384C35&currStreakLabel=384C35&border=384C35&background=DFE5D3&date_format=M%20j%2C%20Y">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live GitHub Activity Feed (5 Cols) -->
+          <div class="lg:col-span-5 bg-celadon-surface/60 border hairline-border rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b hairline-border mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  <span class="font-mono text-xs font-bold uppercase tracking-widest text-moss">Live Activity Feed</span>
+                </div>
+                <span class="font-mono text-[10px] uppercase text-moss/70">Public Commits</span>
+              </div>
+              <p class="text-xs text-moss/80 mb-4 font-normal">
+                Recent repository events, pushes, and build cycles from GitHub telemetry:
+              </p>
+
+              <!-- Dynamic Activity List Container -->
+              <div class="space-y-3.5 custom-scrollbar max-h-[380px] overflow-y-auto pr-1" id="github-activity-stream">
+                <div class="p-3 rounded-xl border hairline-border bg-celadon/70 flex flex-col space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="font-semibold text-moss">Harrykalsi24/Harrykalsi24</span>
+                    <span class="text-moss/60 text-[10px]">Recent</span>
+                  </div>
+                  <span class="text-xs text-moss/85 font-mono">PushEvent • Profile README optimization</span>
+                </div>
+
+                <div class="p-3 rounded-xl border hairline-border bg-celadon/70 flex flex-col space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="font-semibold text-moss">Harrykalsi24/widgy</span>
+                    <span class="text-moss/60 text-[10px]">Recent</span>
+                  </div>
+                  <span class="text-xs text-moss/85 font-mono">CreateEvent • Repository initialization &amp; widgets</span>
+                </div>
+
+                <div class="p-3 rounded-xl border hairline-border bg-celadon/70 flex flex-col space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="font-semibold text-moss">Harrykalsi24/Foggy-Weather</span>
+                    <span class="text-moss/60 text-[10px]">Telemetry</span>
+                  </div>
+                  <span class="text-xs text-moss/85 font-mono">PushEvent • Atmospheric API integration updates</span>
+                </div>
+
+                <div class="p-3 rounded-xl border hairline-border bg-celadon/70 flex flex-col space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="font-semibold text-moss">Harrykalsi24/Anipaca</span>
+                    <span class="text-moss/60 text-[10px]">Streaming</span>
+                  </div>
+                  <span class="text-xs text-moss/85 font-mono">PushEvent • Next.js UI performance tuning</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t hairline-border mt-4 flex items-center justify-between text-[11px] font-mono uppercase text-moss/70">
+              <span>Status: Synchronized</span>
+              <a class="hover:text-moss flex items-center gap-1 font-semibold" href="https://github.com/Harrykalsi24?tab=repositories" rel="noreferrer" target="_blank">
+                <span>All Repositories (11)</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: GitHubAnalytics -->
+
+    <!-- BEGIN: CallToAction & Contact -->
+    <section class="pt-10 md:pt-14 pb-14 max-w-[1440px] mx-auto px-6 md:px-12 reveal-on-scroll scroll-mt-20" data-purpose="contact-and-inquiry" id="contact">
+      <!-- Massive Display Headline with Smooth GPU-Accelerated Transform Hover (No Jumpy Layout Reflow) -->
+      <div class="text-center mb-8 sm:mb-10">
+        <span class="text-[11px] font-mono uppercase tracking-[0.25em] text-moss/70 block mb-4">Start an engagement</span>
+        <h2 class="display-condensed text-[48px] min-[400px]:text-[56px] sm:text-[90px] md:text-[130px] lg:text-[160px] tracking-tight leading-[0.85] text-moss transition-all duration-700 ease-out hover:text-moss-dark hover:scale-[1.01] cursor-default select-none group" id="cta-headline">
+          <span class="inline-block transition-transform duration-500 group-hover:-translate-y-1">LET'S</span>
+          <span class="inline-block transition-transform duration-500 delay-75 group-hover:-translate-y-1">BUILD</span>
+          <span class="inline-block transition-transform duration-500 delay-100 group-hover:-translate-y-1">SOMETHING</span>
+          <span class="inline-block transition-transform duration-500 delay-150 group-hover:-translate-y-1">ENDURING</span>
+        </h2>
+      </div>
+
+      <!-- Action Card with Direct Mail & Copy Trigger -->
+      <div class="max-w-2xl mx-auto rounded-3xl border hairline-border bg-celadon-surface/60 p-6 sm:p-12 text-center flex flex-col items-center hover:shadow-2xl transition-shadow duration-500">
+        <p class="text-moss text-base sm:text-lg mb-8 max-w-md font-editorial">
+          Available for software developer positions, full-stack web/mobile roles, and innovative system engineering opportunities.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a class="group interactive-pill-btn min-h-[44px] inline-flex items-center gap-3 bg-moss text-celadon px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs font-semibold tracking-widest uppercase hover:bg-moss-dark transition-all duration-300 shadow-md active:scale-95" href="mailto:harjit2003singh@gmail.com">
+            <span>harjit2003singh@gmail.com</span>
+            <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1.5">→</span>
+          </a>
+          
+          <button aria-label="Copy Email Address" class="group interactive-pill-btn min-h-[44px] px-5 py-3.5 rounded-full border hairline-border text-xs font-medium uppercase tracking-wider text-moss bg-celadon hover:bg-moss hover:text-celadon transition-all duration-300 flex items-center gap-2 active:scale-95" id="copy-email-btn" onclick="copyEmailToClipboard()" type="button">
+            <svg aria-hidden="true" class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copy-email-text">Copy Email</span>
+          </button>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs uppercase tracking-wider text-moss/70 font-mono">
+          <span>GitHub: @Harrykalsi24</span>
+          <span class="hidden sm:inline">•</span>
+          <span>LinkedIn: in/harrykalsi24</span>
+          <span class="hidden sm:inline">•</span>
+          <span>Open to Global Remote</span>
+        </div>
+      </div>
+    </section>
+    <!-- END: CallToAction & Contact -->
+  </main>
+
+  <!-- BEGIN: SiteFooter -->
+  <footer class="border-t hairline-border py-12 bg-celadon text-moss/80 text-xs scroll-mt-24" data-purpose="main-footer" id="index">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+      <!-- Copyright Notice -->
+      <div class="flex items-center gap-3">
+        <div class="w-4 h-4 grid grid-cols-2 gap-0.5 place-items-center opacity-80" aria-hidden="true">
+          <span class="w-1.5 h-1.5 rounded-full bg-moss"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-moss"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-moss"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-moss"></span>
+        </div>
+        <span class="font-mono uppercase tracking-wider text-[11px]">© 2025 Harjit Singh. All rights reserved.</span>
+      </div>
+
+      <!-- Outbound Links -->
+      <div class="flex items-center space-x-6 sm:space-x-8 font-mono uppercase tracking-wider text-[11px]">
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://github.com/Harrykalsi24" rel="noreferrer" target="_blank">GitHub</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://www.linkedin.com/in/harrykalsi24/" rel="noreferrer" target="_blank">LinkedIn</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="https://harrykalsi24.github.io/Portfolio/" rel="noreferrer" target="_blank">Portfolio</a>
+        <a class="nav-editorial-link hover:text-moss transition-colors py-1" href="mailto:harjit2003singh@gmail.com">Email</a>
+      </div>
+
+      <!-- Live Clock Display -->
+      <div aria-live="polite" class="font-mono text-[11px] uppercase tracking-wider" data-purpose="local-timezone-display" id="cph-clock">
+        LOCAL TIME — 00:00:00
+      </div>
+    </div>
+  </footer>
+  <!-- END: SiteFooter -->
+
+  <!-- BEGIN: Interactive Project Modal -->
+  <div aria-labelledby="modal-project-title" aria-modal="true" role="dialog" class="fixed inset-0 z-[9990] flex items-center justify-center p-4 sm:p-6 bg-moss-deep/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300" id="project-modal">
+    <div id="modal-card-box" class="bg-celadon border hairline-border rounded-3xl p-6 sm:p-8 shadow-2xl relative flex flex-col space-y-6 text-moss max-w-2xl w-full mx-auto transform scale-95 transition-transform duration-300">
+      <div class="flex items-start justify-between border-b hairline-border pb-4">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-moss/70" id="modal-project-category">Full-Stack Web</span>
+          <h2 class="text-2xl sm:text-3xl font-editorial font-bold text-moss mt-1" id="modal-project-title">Project Title</h2>
+        </div>
+        <button aria-label="Close Project Modal" class="min-h-[44px] min-w-[44px] p-2 rounded-full border hairline-border hover:bg-celadon-surface transition-colors flex items-center justify-center font-mono text-sm" onclick="closeProjectModal()" type="button">
+          ✕
+        </button>
+      </div>
+
+      <div class="rounded-2xl p-6 bg-celadon-dark hairline-border border flex flex-col justify-center space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono uppercase tracking-widest text-moss" id="modal-project-stack">TypeScript • React</span>
+          <span class="text-xs font-mono uppercase tracking-widest text-moss/70" id="modal-project-status">Completed</span>
+        </div>
+        <p class="text-sm leading-relaxed text-moss/90" id="modal-project-desc">
+          Project narrative and architectural breakdown.
+        </p>
+      </div>
+
+      <!-- Action Links for Demo & Repo -->
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <a class="interactive-pill-btn min-h-[44px] px-6 py-2.5 rounded-full bg-moss text-celadon text-xs font-mono uppercase tracking-wider flex items-center gap-2 hover:bg-moss-dark transition-all" href="#" id="modal-demo-link" rel="noreferrer" target="_blank">
+          <span>Live Deployment</span>
+          <span>↗</span>
+        </a>
+        <a class="interactive-pill-btn min-h-[44px] px-6 py-2.5 rounded-full border hairline-border text-xs font-mono uppercase tracking-wider text-moss hover:bg-celadon-surface transition-all flex items-center gap-2" href="#" id="modal-repo-link" rel="noreferrer" target="_blank">
+          <span>Source Code</span>
+          <span>↗</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 pt-4 border-t hairline-border text-[11px] font-mono uppercase tracking-wider text-moss/70">
+        <div>
+          <span class="block text-moss/50 text-[9px]">Timeline</span>
+          <span class="font-semibold text-moss" id="modal-project-year">2024</span>
+        </div>
+        <div>
+          <span class="block text-moss/50 text-[9px]">Role</span>
+          <span class="font-semibold text-moss" id="modal-project-role">Creator</span>
+        </div>
+        <div>
+          <span class="block text-moss/50 text-[9px]">License</span>
+          <span class="font-semibold text-moss">Open Source</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Interactive Project Modal -->
+
+  <!-- BEGIN: InteractiveScripts -->
+  <script data-purpose="editorial-portfolio-engine">
+    // --- Ink Bleed Theme Changer Engine (WebGL2 + GSAP + 2D Fallback) ---
+    class InkBleedEngine {
+      constructor() {
+        this.canvas = document.getElementById('ink-bleed-canvas');
+        this.toggleBtn = document.getElementById('theme-toggle');
+        this.isAnimating = false;
+        this.gl = null;
+        this.ctx = null;
+        this.program = null;
+        this.noiseTex = null;
+        this.state = { progress: 0, time: 0, radius: 0, cleanup: 0 };
+        this.tween = null;
+
+        // Check WebGL2 support
+        if (this.canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          try {
+            this.gl = this.canvas.getContext('webgl2', { alpha: true, antialias: true, depth: false, stencil: false });
+            if (this.gl) this.initWebGL();
+          } catch (e) {
+            this.gl = null;
+          }
+          if (!this.gl && this.canvas) {
+            this.ctx = this.canvas.getContext('2d');
+          }
+        }
+
+        // Restore saved theme or match system
+        const savedTheme = localStorage.getItem('atelier_theme');
+        if (savedTheme) {
+          this.setTheme(savedTheme, false);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          this.setTheme('dark', false);
+        }
+
+        this.init();
+      }
+
+      initWebGL() {
+        const gl = this.gl;
+        const vs = `#version 300 es
+        void main() {
+          vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+          gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+        }`;
+
+        const fs = `#version 300 es
+        precision highp float;
+        uniform vec2 uRes;
+        uniform vec2 uCenter;
+        uniform float uRadius;
+        uniform float uCleanup;
+        uniform float uTime;
+        uniform float uRef;
+        uniform vec2 uSeed;
+        uniform mat2 uSeedRot;
+        uniform float uTendril;
+        uniform float uNoiseScale;
+        uniform float uSoftness;
+        uniform float uDrift;
+        uniform vec3 uInkColor;
+        uniform vec3 uRimColor;
+        uniform sampler2D uNoise;
+        out vec4 outColor;
+
+        const float INV_CELLS = 1.0 / 32.0;
+        float gnoise(vec2 p) { return texture(uNoise, p * INV_CELLS).r * 2.0 - 1.0; }
+        float gnoise2(vec2 p) { return texture(uNoise, p * INV_CELLS).g * 2.0 - 1.0; }
+        const mat2 OCT = mat2(0.8, 0.6, -0.6, 0.8) * 2.03;
+
+        float fbm3(vec2 p) {
+          float s = 0.0, a = 0.5;
+          for (int i = 0; i < 3; i++) { s += a * gnoise(p); p = OCT * p + 17.13; a *= 0.5; }
+          return s / 0.875;
+        }
+        float fbm4(vec2 p) {
+          float s = 0.0, a = 0.5;
+          for (int i = 0; i < 4; i++) { s += a * gnoise(p); p = OCT * p + 17.13; a *= 0.5; }
+          return s / 0.9375;
+        }
+        float fbm5(vec2 p) {
+          float s = 0.0, a = 0.5;
+          for (int i = 0; i < 5; i++) { s += a * gnoise(p); p = OCT * p + 17.13; a *= 0.5; }
+          return s / 0.96875;
+        }
+
+        void main() {
+          vec2 devPx = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);
+          vec2 rel = devPx - uCenter;
+          float d = length(rel);
+          float R = uRadius;
+          float cleanup = uCleanup;
+
+          const float A_LOBE = 0.22;
+          const float A_BLOB = 0.20;
+          const float A_SUM = A_LOBE + A_BLOB;
+          const float TENDRIL_REACH = 0.24;
+          const float FIBRE_PX = 1.8;
+          const float SPECK_PX = 18.0;
+
+          float outer = R * (1.0 + A_SUM) * (1.0 + TENDRIL_REACH * uTendril) + cleanup + FIBRE_PX + SPECK_PX + uSoftness * 2.0;
+          if (d > outer) { discard; }
+
+          float t = uTime * uDrift;
+          vec2 p = rel / max(uRef, 1.0);
+          vec2 dir = uSeedRot * (rel / max(d, 1e-3));
+          float ns = uNoiseScale;
+
+          vec2 q = p * (2.4 * ns) + uSeed;
+          vec2 w = vec2(fbm3(q + vec2(0.0, 0.31 * t)), fbm3(q + vec2(5.2, 1.3) - vec2(0.27 * t, 0.0)));
+          float blob = fbm5(q + 2.3 * w + vec2(0.12 * t, -0.08 * t));
+          vec2 lq = dir * 0.9 + uSeed.yx * 0.37 + vec2(0.06 * t);
+          float lobes = gnoise(lq) * 0.75 + gnoise(lq * 2.1 + 9.1) * 0.25;
+          float reach = clamp(1.0 + A_LOBE * 1.6 * lobes + A_BLOB * 1.5 * blob, 1.0 - A_SUM, 1.0 + A_SUM);
+          float f = d - R * reach;
+
+          float gate = smoothstep(-0.35, 0.4, fbm3(dir * 1.6 + uSeed * 0.61 + 3.7));
+          vec2 tq = dir * (2.2 * ns) + (d / max(uRef, 1.0)) * vec2(2.6, -1.9) * ns + 1.2 * w + uSeed * 1.7 + vec2(0.0, 0.18 * t);
+          float n = fbm4(tq);
+          float ridgePx = abs(n) * max(d, 24.0) / (4.0 * ns);
+          float lenN = gnoise(dir * 3.1 + uSeed * 0.43 + vec2(0.1 * t)) * 0.5 + 0.5;
+          float L = uTendril * TENDRIL_REACH * R * gate * (0.35 + 0.65 * lenN);
+          float along = clamp(f / max(L, 1.0), 0.0, 1.0);
+          float width = clamp(R * 0.022, 1.5, 9.0) * (1.0 - along * along) * gate;
+          float ft = max(f - L, ridgePx - width);
+          float k = 6.0;
+          float hh = clamp(0.5 + 0.5 * (ft - f) / k, 0.0, 1.0);
+          f = mix(ft, f, hh) - k * hh * (1.0 - hh);
+
+          vec2 fq = devPx * 0.34 + uSeed * 13.0;
+          float fibre = gnoise2(fq) * 0.65 + gnoise2(OCT * fq + 5.3) * 0.35;
+          f += fibre * FIBRE_PX - cleanup;
+
+          float soft = max(uSoftness, 0.6);
+          float inked = 1.0 - smoothstep(-soft, soft, f);
+          if (inked <= 0.001) { discard; }
+
+          float thinW = mix(3.0, 26.0, clamp(blob * 0.8 + 0.3, 0.0, 1.0));
+          float density = mix(0.75, 1.0, smoothstep(0.0, thinW, -f));
+          float cov = inked * density;
+
+          float rimX = (f + soft * 1.1) / (soft * 1.4 + 1.2);
+          float rim = exp(-rimX * rimX) * inked;
+          vec3 col = mix(uInkColor, uRimColor, rim * 0.55);
+
+          outColor = vec4(col, cov);
+        }`;
+
+        const createShader = (type, src) => {
+          const s = gl.createShader(type);
+          gl.shaderSource(s, src);
+          gl.compileShader(s);
+          return s;
+        };
+
+        const vShader = createShader(gl.VERTEX_SHADER, vs);
+        const fShader = createShader(gl.FRAGMENT_SHADER, fs);
+        this.program = gl.createProgram();
+        gl.attachShader(this.program, vShader);
+        gl.attachShader(this.program, fShader);
+        gl.linkProgram(this.program);
+
+        // Build procedural tileable noise texture (from noiseTexture.ts)
+        const size = 256;
+        const data = new Uint8Array(size * size * 4);
+        for (let i = 0; i < size * size; i++) {
+          data[i * 4 + 0] = Math.floor(Math.random() * 256);
+          data[i * 4 + 1] = Math.floor(Math.random() * 256);
+          data[i * 4 + 2] = Math.floor(Math.random() * 256);
+          data[i * 4 + 3] = 255;
+        }
+        this.noiseTex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, this.noiseTex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, size, size, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
+      }
+
+      init() {
+        if (!this.toggleBtn) return;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+
+        const triggerFromBtn = () => {
+          const rect = this.toggleBtn.getBoundingClientRect();
+          this.triggerBleed(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        };
+
+        this.toggleBtn.addEventListener('click', triggerFromBtn);
+
+        window.addEventListener('keydown', (e) => {
+          if (e.key.toLowerCase() === 't' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+            triggerFromBtn();
+          }
+        });
+      }
+
+      resize() {
+        if (!this.canvas) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = window.innerWidth * dpr;
+        this.canvas.height = window.innerHeight * dpr;
+        if (this.gl) this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      setTheme(theme, save = true) {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (save) localStorage.setItem('atelier_theme', theme);
+        
+        const sunPath = document.getElementById('theme-icon-sun');
+        const moonPath = document.getElementById('theme-icon-moon');
+        if (sunPath && moonPath) {
+          sunPath.classList.toggle('hidden', theme !== 'dark');
+          moonPath.classList.toggle('hidden', theme === 'dark');
+        }
+      }
+
+      triggerBleed(originX, originY) {
+        if (this.isAnimating) return;
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          this.setTheme(targetTheme, true);
+          return;
+        }
+
+        this.isAnimating = true;
+        this.canvas.style.opacity = '1';
+        this.canvas.classList.add('active');
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const centerDev = [originX * dpr, originY * dpr];
+        const maxDist = Math.hypot(
+          Math.max(originX, window.innerWidth - originX),
+          Math.max(originY, window.innerHeight - originY)
+        ) * dpr * 1.08;
+
+        const seed = [Math.random() * 64 - 32, Math.random() * 64 - 32];
+        const angle = Math.random() * Math.PI * 2;
+        const seedRot = [Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math.cos(angle)];
+
+        // Incoming theme ink colors adapted for Atelier Moss
+        const isDarkTarget = targetTheme === 'dark';
+        const inkRGB = isDarkTarget ? [0.07, 0.094, 0.07] : [0.875, 0.898, 0.827];
+        const rimRGB = isDarkTarget ? [0.875, 0.898, 0.827] : [0.114, 0.165, 0.106];
+        const startTime = performance.now();
+        let themeSwapped = false;
+
+        const state = { progress: 0 };
+        const duration = 1.35; // Sustained continuous wave spread (zero blank dwell)
+
+        const onFrame = () => {
+          const p = state.progress;
+          const time = (performance.now() - startTime) / 1000;
+          // Steady outward wave expansion that actively travels across screen the whole duration
+          const radius = p * maxDist * 0.94;
+          const cleanup = p > 0.72 ? Math.pow((p - 0.72) / 0.28, 2) * maxDist * 0.16 : 0;
+
+          if (!themeSwapped && p >= 0.50) {
+            this.setTheme(targetTheme, true);
+            themeSwapped = true;
+          }
+
+          if (this.gl && this.program) {
+            const gl = this.gl;
+            gl.useProgram(this.program);
+            gl.uniform2f(gl.getUniformLocation(this.program, 'uRes'), this.canvas.width, this.canvas.height);
+            gl.uniform2f(gl.getUniformLocation(this.program, 'uCenter'), centerDev[0], centerDev[1]);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uRadius'), radius);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uCleanup'), cleanup);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uTime'), time);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uRef'), Math.max(this.canvas.width, this.canvas.height));
+            gl.uniform2f(gl.getUniformLocation(this.program, 'uSeed'), seed[0], seed[1]);
+            gl.uniformMatrix2fv(gl.getUniformLocation(this.program, 'uSeedRot'), false, seedRot);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uTendril'), 1.0);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uNoiseScale'), 1.0);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uSoftness'), 1.4);
+            gl.uniform1f(gl.getUniformLocation(this.program, 'uDrift'), 1.0);
+            gl.uniform3f(gl.getUniformLocation(this.program, 'uInkColor'), inkRGB[0], inkRGB[1], inkRGB[2]);
+            gl.uniform3f(gl.getUniformLocation(this.program, 'uRimColor'), rimRGB[0], rimRGB[1], rimRGB[2]);
+
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.noiseTex);
+            gl.uniform1i(gl.getUniformLocation(this.program, 'uNoise'), 0);
+
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          } else if (this.ctx) {
+            // Procedural Canvas 2D Fallback
+            const ctx = this.ctx;
+            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            ctx.save();
+            ctx.beginPath();
+            const tendrils = 24;
+            for (let i = 0; i <= tendrils; i++) {
+              const a = (i / tendrils) * Math.PI * 2;
+              const r = radius * (1 + 0.12 * Math.sin(a * 4 + time * 3));
+              const x = centerDev[0] + Math.cos(a) * r;
+              const y = centerDev[1] + Math.sin(a) * r;
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = isDarkTarget ? '#121812' : '#DFE5D3';
+            ctx.fill();
+            ctx.restore();
+          }
+        };
+
+        const onDone = () => {
+          if (window.gsap) {
+            // Immediate crisp dissolve the moment wave reaches corners (zero blank screen)
+            gsap.to(this.canvas, {
+              opacity: 0,
+              duration: 0.14,
+              ease: 'power2.out',
+              onComplete: () => {
+                this.canvas.classList.remove('active');
+                if (this.gl) this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+                if (this.ctx) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.isAnimating = false;
+              }
+            });
+          } else {
+            this.canvas.style.opacity = '0';
+            this.canvas.classList.remove('active');
+            this.isAnimating = false;
+          }
+        };
+
+        if (window.gsap) {
+          gsap.to(state, {
+            progress: 1,
+            duration: duration,
+            ease: 'power1.out', // Sustained, continuous spread speed throughout the entire animation
+            onUpdate: onFrame,
+            onComplete: onDone
+          });
+        } else {
+          // rAF fallback if GSAP not yet ready
+          const step = (now) => {
+            const elapsed = (now - startTime) / 1000;
+            state.progress = Math.min(elapsed / duration, 1);
+            onFrame();
+            if (state.progress < 1) requestAnimationFrame(step);
+            else onDone();
+          };
+          requestAnimationFrame(step);
+        }
+      }
+    }
+
+    // Projects Dataset
+    const projectData = {
+      anipaca: {
+        title: 'Anipaca Streaming Platform',
+        category: 'Full-Stack Web Application',
+        year: '2025',
+        role: 'Sole Developer',
+        stack: 'Next.js • TypeScript • Media APIs • Tailwind',
+        status: 'Production Live',
+        demo: 'https://anipaca.aniverse.top',
+        repo: 'https://github.com/Harrykalsi24/Anipaca',
+        desc: 'A modern, high-performance streaming web application built with responsive design, dynamic media player integration, catalog discovery, episode tracking, and ultra-fast page transitions.'
+      },
+      foggy: {
+        title: 'Foggy Weather Engine',
+        category: 'Atmospheric Telemetry App',
+        year: '2024',
+        role: 'Full-Stack Engineer',
+        stack: 'TypeScript • React • Geolocation • OpenWeather API',
+        status: 'Production Live',
+        demo: 'https://harrykalsi24.github.io/Foggy-Weather/',
+        repo: 'https://github.com/Harrykalsi24/Foggy-Weather',
+        desc: 'Real-time meteorological forecast application integrating live OpenWeather APIs, dynamic geolocation visuals, atmospheric metrics (humidity, wind velocity, precipitation probability), and responsive 5-day projections.'
+      },
+      perfume: {
+        title: 'Artisanal Perfume Boutique',
+        category: 'Luxury E-Commerce Experience',
+        year: '2024',
+        role: 'Frontend Architect',
+        stack: 'HTML5 • Tailwind CSS • Vanilla JavaScript',
+        status: 'Production Live',
+        demo: 'https://harrykalsi24.github.io/Perfume-E-Comm/',
+        repo: 'https://github.com/Harrykalsi24/Perfume-E-Comm',
+        desc: 'A luxury, mobile-first e-commerce web showcase for an artisanal perfume brand. Engineered with reactive cart state management, product filtering, high-contrast imagery, and smooth micro-interactions.'
+      },
+      ecal: {
+        title: 'Ecal Loan & EMI Analyzer',
+        category: 'Financial Modeling Engine',
+        year: '2024',
+        role: 'Algorithms & UI',
+        stack: 'JavaScript (ES6+) • Financial Math • CSS3',
+        status: 'Open Source',
+        demo: 'https://github.com/Harrykalsi24/Ecal',
+        repo: 'https://github.com/Harrykalsi24/Ecal',
+        desc: 'Precision interactive financial computation tool designed for calculating mortgage EMIs, compounding interest rates, and loan amortization breakdowns with real-time reactive feedback.'
+      },
+      snake: {
+        title: 'Retro Canvas Snake Game',
+        category: 'Canvas Physics Arcade',
+        year: '2024',
+        role: 'Game Developer',
+        stack: 'HTML5 Canvas • JavaScript • Physics Loops',
+        status: 'Playable Live',
+        demo: 'https://harrykalsi24.github.io/Snake-game/',
+        repo: 'https://github.com/Harrykalsi24/Snake-game',
+        desc: 'Arcade snake game built using native HTML5 Canvas context and JavaScript animation frame loops. Features discrete collision mechanics, adaptive speed ramps, and local high-score persistence.'
+      },
+      loginui: {
+        title: 'Dynamic Video Auth UI',
+        category: 'Authentication Interface',
+        year: '2024',
+        role: 'UI/UX Developer',
+        stack: 'CSS3 • Video Background • Glassmorphism • HTML5',
+        status: 'Production Live',
+        demo: 'https://harrykalsi24.github.io/LoginUI/',
+        repo: 'https://github.com/Harrykalsi24/LoginUI',
+        desc: 'Modern interactive authentication interface featuring dynamic background video swapping, frosted glass refraction layers, accessible input states, and responsive layout scaling.'
+      }
+    };
+
+    function openProjectModal(key) {
+      const data = projectData[key];
+      if (!data) return;
+      ['title', 'category', 'year', 'role', 'stack', 'status', 'desc'].forEach(field => {
+        const el = document.getElementById(`modal-project-${field}`);
+        if (el) el.textContent = data[field] || '';
+      });
+      
+      const setLink = (id, url) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.href = url || '#';
+          btn.classList.toggle('hidden', !url);
+        }
+      };
+      setLink('modal-demo-link', data.demo);
+      setLink('modal-repo-link', data.repo);
+
+      const modal = document.getElementById('project-modal');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        const card = modal.querySelector('#modal-card-box');
+        if (card) {
+          card.classList.remove('scale-95');
+          card.classList.add('scale-100');
+        }
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('project-modal');
+      if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        const card = modal.querySelector('#modal-card-box');
+        if (card) {
+          card.classList.add('scale-95');
+          card.classList.remove('scale-100');
+        }
+        document.body.style.overflow = '';
+      }
+    }
+
+    function copyEmailToClipboard() {
+      const email = 'harjit2003singh@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        const textSpan = document.getElementById('copy-email-text');
+        if (textSpan) {
+          const orig = textSpan.textContent;
+          textSpan.textContent = 'Copied ✓';
+          setTimeout(() => { textSpan.textContent = orig; }, 2200);
+        }
+      }).catch(() => {
+        window.location.href = `mailto:${email}`;
+      });
+    }
+
+    function updateClock() {
+      const clockElement = document.getElementById('cph-clock');
+      if (!clockElement) return;
+      const now = new Date();
+      try {
+        const formatted = new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', hour12: false }).format(now);
+        clockElement.innerText = `SYS TIME — ${formatted}`;
+      } catch (e) {
+        clockElement.innerText = `SYS TIME — ${now.toLocaleTimeString()}`;
+      }
+    }
+
+    async function loadGitHubActivity() {
+      const container = document.getElementById('github-activity-stream');
+      if (!container) return;
+      try {
+        const res = await fetch('https://api.github.com/users/Harrykalsi24/events?per_page=6');
+        if (!res.ok) return;
+        const events = await res.json();
+        if (!Array.isArray(events) || events.length === 0) return;
+
+        container.innerHTML = '';
+        events.forEach(ev => {
+          const item = document.createElement('div');
+          item.className = 'p-3 rounded-xl border hairline-border bg-celadon/70 flex flex-col space-y-1 hover:bg-celadon transition-colors';
+          const repoName = ev.repo?.name || 'Harrykalsi24/repo';
+          const type = ev.type?.replace('Event', '') || 'Activity';
+          const date = new Date(ev.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+          
+          let desc = 'Repository update';
+          if (ev.type === 'PushEvent') {
+            const commitMsg = ev.payload?.commits?.[0]?.message || 'Code commit & sync';
+            desc = commitMsg.length > 50 ? commitMsg.slice(0, 50) + '...' : commitMsg;
+          } else if (ev.type === 'CreateEvent') {
+            desc = `Created ${ev.payload?.ref_type || 'resource'}`;
+          } else if (ev.type === 'WatchEvent') {
+            desc = 'Starred repository';
+          }
+
+          item.innerHTML = `
+            <div class="flex items-center justify-between text-[11px] font-mono">
+              <a href="https://github.com/${repoName}" target="_blank" rel="noreferrer" class="font-semibold text-moss hover:underline">${repoName}</a>
+              <span class="text-moss/60 text-[10px]">${date}</span>
+            </div>
+            <span class="text-xs text-moss/85 font-mono">${type} • ${desc}</span>
+          `;
+          container.appendChild(item);
+        });
+      } catch (err) {
+        // Fallback remains in DOM
+      }
+    }
+
+    // --- Custom Interactive Cursor Engine (Difference Inversion) ---
+    function initCustomCursor() {
+      const cursor = document.getElementById('custom-cursor');
+      if (!cursor || window.matchMedia('(pointer: coarse)').matches) return;
+
+      let mouseX = -100, mouseY = -100;
+      let curX = -100, curY = -100;
+      let isVisible = false;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isVisible) {
+          cursor.style.opacity = '1';
+          curX = mouseX;
+          curY = mouseY;
+          isVisible = true;
+        }
+      });
+
+      function renderCursor() {
+        curX += (mouseX - curX) * 0.45;
+        curY += (mouseY - curY) * 0.45;
+        cursor.style.left = `${curX}px`;
+        cursor.style.top = `${curY}px`;
+        requestAnimationFrame(renderCursor);
+      }
+      renderCursor();
+
+      const hoverTargets = 'a, button, [role="button"], input, textarea, select, [data-purpose="project-card"], #hero-draggable-avatar, .stack-pillar-card';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hoverTargets)) {
+          cursor.classList.add('expand');
+        }
+      });
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(hoverTargets)) {
+          cursor.classList.remove('expand');
+        }
+      });
+
+      document.addEventListener('mousedown', () => cursor.classList.add('active'));
+      document.addEventListener('mouseup', () => cursor.classList.remove('active'));
+
+      document.addEventListener('mouseleave', () => {
+        cursor.style.opacity = '0';
+        isVisible = false;
+      });
+      document.addEventListener('mouseenter', () => {
+        cursor.style.opacity = '1';
+        isVisible = true;
+      });
+    }
+
+    // --- Dynamic Typewriter Engine ---
+    function initTypewriter() {
+      const el = document.getElementById('typewriter');
+      if (!el) return;
+
+      const titles = [
+        "Software Developer",
+        "Full-Stack Engineer",
+        "Systems Architect",
+        "Network Specialist"
+      ];
+      let currentIdx = 0;
+      let isRunning = true;
+
+      async function typeLoop() {
+        while (isRunning) {
+          const currentText = titles[currentIdx];
+          // Type characters
+          for (let i = 0; i <= currentText.length; i++) {
+            if (!isRunning) return;
+            el.textContent = currentText.slice(0, i);
+            await new Promise(r => setTimeout(r, 65));
+          }
+          await new Promise(r => setTimeout(r, 1500));
+          // Backspace characters
+          for (let i = currentText.length; i >= 0; i--) {
+            if (!isRunning) return;
+            el.textContent = currentText.slice(0, i);
+            await new Promise(r => setTimeout(r, 35));
+          }
+          await new Promise(r => setTimeout(r, 350));
+          currentIdx = (currentIdx + 1) % titles.length;
+        }
+      }
+
+      typeLoop();
+    }
+
+    // Stack Filter Interaction
+    function initStackFilters() {
+      const filterBtns = document.querySelectorAll('.stack-filter-btn');
+      const cards = document.querySelectorAll('.stack-pillar-card');
+      if (!filterBtns.length || !cards.length) return;
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-moss', 'text-celadon');
+            b.classList.add('bg-celadon', 'text-moss');
+          });
+          btn.classList.add('bg-moss', 'text-celadon');
+          btn.classList.remove('bg-celadon', 'text-moss');
+
+          cards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (filter === 'all' || cat === filter) {
+              card.style.display = 'flex';
+              if (window.gsap) gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' });
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // Dynamic Movable Avatar Component (1:1 Constant Speed + Jelly Snapback)
+    let isAvatarDragging = false;
+
+    function initDraggableAvatar() {
+      const avatar = document.getElementById('hero-draggable-avatar');
+      const floatWrap = document.getElementById('hero-avatar-float-wrap');
+      const container = document.getElementById('hero-center-container');
+      if (!avatar || !container) return;
+
+      let startX = 0, startY = 0;
+      let baseX = 0, baseY = 0;
+      let curX = 0, curY = 0;
+
+      const onPointerDown = (e) => {
+        if (e.button && e.button !== 0) return;
+        isAvatarDragging = true;
+        try { avatar.setPointerCapture(e.pointerId); } catch (err) {}
+
+        if (window.gsap) gsap.killTweensOf(avatar);
+        if (floatWrap) floatWrap.classList.remove('hero-float-idle');
+
+        startX = e.clientX;
+        startY = e.clientY;
+        baseX = curX;
+        baseY = curY;
+
+        avatar.style.transition = 'none';
+        avatar.style.transform = `translate3d(${curX}px, ${curY}px, 0) scale(1.03)`;
+      };
+
+      const onPointerMove = (e) => {
+        if (!isAvatarDragging) return;
+
+        // Strict 1:1 constant velocity tracking with zero acceleration / deceleration drift
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+
+        const rect = container.getBoundingClientRect();
+        const boundX = Math.max(120, rect.width * 0.44);
+        const boundY = Math.max(90, rect.height * 0.40);
+
+        curX = Math.max(-boundX, Math.min(boundX, baseX + deltaX));
+        curY = Math.max(-boundY, Math.min(boundY, baseY + deltaY));
+
+        avatar.style.transform = `translate3d(${curX}px, ${curY}px, 0) scale(1.03)`;
+      };
+
+      const onPointerUp = (e) => {
+        if (!isAvatarDragging) return;
+        isAvatarDragging = false;
+        try { avatar.releasePointerCapture(e.pointerId); } catch (err) {}
+
+        const fromX = curX;
+        const fromY = curY;
+        curX = 0;
+        curY = 0;
+
+        if (window.gsap) {
+          // Jelly-like elastic return animation to center default location
+          gsap.fromTo(avatar, 
+            { x: fromX, y: fromY },
+            {
+              x: 0,
+              y: 0,
+              duration: 1.15,
+              ease: 'elastic.out(1.15, 0.38)',
+              onComplete: () => {
+                avatar.style.transform = '';
+                if (floatWrap) floatWrap.classList.add('hero-float-idle');
+              }
+            }
+          );
+
+          // Tactile jelly wobble squish on release
+          gsap.fromTo(avatar, 
+            { scaleX: 1.18, scaleY: 0.84 },
+            { 
+              scaleX: 1, 
+              scaleY: 1, 
+              duration: 1.15, 
+              ease: 'elastic.out(1.25, 0.32)' 
+            }
+          );
+        } else {
+          avatar.style.transition = 'transform 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          avatar.style.transform = 'translate3d(0, 0, 0) scale(1)';
+          setTimeout(() => {
+            avatar.style.transition = '';
+            if (floatWrap) floatWrap.classList.add('hero-float-idle');
+          }, 850);
+        }
+      };
+
+      avatar.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    }
+
+    // Unified DOM Initialization
+    function initPortfolio() {
+      initCustomCursor();
+      initTypewriter();
+      initDraggableAvatar();
+      initStackFilters();
+      new InkBleedEngine();
+      loadGitHubActivity();
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Modal backdrop click & escape handler
+      const modal = document.getElementById('project-modal');
+      if (modal) {
+        modal.showModal = () => openProjectModal();
+        modal.close = () => closeProjectModal();
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeProjectModal();
+          }
+        });
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !modal.classList.contains('opacity-0')) {
+            closeProjectModal();
+          }
+        });
+      }
+
+      // Mobile Menu Handler (Deduplicated)
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const bar1 = document.getElementById('menu-bar-1');
+      const bar2 = document.getElementById('menu-bar-2');
+
+      const setMobileMenu = (open) => {
+        if (!mobileNav || !mobileBtn) return;
+        mobileNav.classList.toggle('hidden', !open);
+        mobileBtn.setAttribute('aria-expanded', String(open));
+        mobileNav.setAttribute('aria-hidden', String(!open));
+        if (bar1 && bar2) {
+          bar1.classList.toggle('rotate-45', open);
+          bar1.classList.toggle('translate-y-1', open);
+          bar2.classList.toggle('-rotate-45', open);
+          bar2.classList.toggle('-translate-y-1', open);
+        }
+      };
+
+      if (mobileBtn && mobileNav) {
+        mobileBtn.addEventListener('click', () => {
+          const isOpen = !mobileNav.classList.contains('hidden');
+          setMobileMenu(!isOpen);
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => setMobileMenu(false));
+        });
+      }
+
+      // Scroll Reveals
+      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        revealElements.forEach(el => observer.observe(el));
+      } else {
+        revealElements.forEach(el => el.classList.add('is-revealed'));
+      }
+
+      // Hero Interactive Parallax
+      const heroCanvas = document.getElementById('hero-interactive-canvas');
+      const parallaxTarget = document.getElementById('hero-parallax-art');
+      if (heroCanvas && parallaxTarget && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
+        heroCanvas.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
+        heroCanvas.addEventListener('mousemove', (e) => {
+          const r = heroCanvas.getBoundingClientRect();
+          mouseX = ((e.clientX - r.left) / r.width - 0.5) * 16;
+          mouseY = ((e.clientY - r.top) / r.height - 0.5) * 10;
+        });
+
+        function animateParallax() {
+          if (!isAvatarDragging) {
+            currentX += (mouseX - currentX) * 0.08;
+            currentY += (mouseY - currentY) * 0.08;
+            if (parallaxTarget) parallaxTarget.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+          } else {
+            currentX = 0;
+            currentY = 0;
+            if (parallaxTarget) parallaxTarget.style.transform = 'translate3d(0, 0, 0)';
+          }
+          requestAnimationFrame(animateParallax);
+        }
+        animateParallax();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPortfolio);
+    } else {
+      initPortfolio();
+    }
+  </script>
+</body>
+</html>
