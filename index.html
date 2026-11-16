@@ -6,14 +6,27 @@
   <title>It's Harry!</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="description" content="Portfolio of Harjit Singh (Harry Kalsi) — Software Developer specializing in Full-Stack Web, Cross-Platform Mobile Apps, and Network Architecture.">
-  <!-- GSAP Core for Smooth Ink Bleed Easing -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <!-- Tailwind CSS v3 with plugins -->
+  <!-- Performance Preconnects & High-Priority Preloads for Sub-Second FCP/LCP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://avatars.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  
+  <!-- Preload Critical LCP Avatar Image -->
+  <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/166169358?v=4" fetchpriority="high">
+
+  <!-- Non-Blocking Lean Google Fonts (Swap-enabled, eliminated 500KB unused weights) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Fira+Code:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&family=Syne:wght@700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Fira+Code:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&family=Syne:wght@700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Fira+Code:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&family=Syne:wght@700;800&display=swap">
+  </noscript>
+
+  <!-- Non-blocking Deferred Scripts -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Tailwind CSS v3 -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <!-- Google Fonts: Barlow Condensed & Hanken Grotesk + Anton, Syne, Fira Code -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&amp;family=Fira+Code:wght@400;500;600&amp;family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet">
   
   <!-- Theme Color Variables & Unified Styles -->
   <style>
@@ -50,15 +63,17 @@
     }
 
     .display-condensed {
-      font-family: 'Barlow Condensed', 'Anton', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Barlow Condensed', Impact, 'Arial Narrow Bold', -apple-system, BlinkMacSystemFont, sans-serif;
       text-transform: uppercase;
       line-height: 0.85;
       letter-spacing: -0.015em;
       text-align: center;
+      font-display: swap;
     }
     .editorial-italic {
-      font-family: 'Hanken Grotesk', 'Plus Jakarta Sans', serif;
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       font-style: italic;
+      font-display: swap;
     }
 
     /* Subtle paper texture grain simulation */
@@ -141,12 +156,12 @@
     }
 
     @keyframes heroLineUp {
-      0% { opacity: 0; transform: translateY(115%); }
+      0% { opacity: 0.92; transform: translateY(16px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeInSlideUp {
-      0% { opacity: 0; transform: translateY(32px); }
+      0% { opacity: 0.92; transform: translateY(12px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
@@ -155,13 +170,14 @@
       50% { transform: translateY(-8px) rotate(0.3deg); }
     }
 
-    .animate-hero-line-1 { animation: heroLineUp 1.25s var(--editorial-ease) 0.15s backwards; }
-    .animate-hero-line-2 { animation: heroLineUp 1.25s var(--editorial-ease) 0.32s backwards; }
-    .animate-hero-line-3 { animation: heroLineUp 1.25s var(--editorial-ease) 0.48s backwards; }
+    /* Fast, snappy GPU transitions with visible Frame 1 paint (Sub-second LCP) */
+    .animate-hero-line-1 { animation: heroLineUp 0.55s var(--editorial-ease) 0.04s backwards; }
+    .animate-hero-line-2 { animation: heroLineUp 0.55s var(--editorial-ease) 0.10s backwards; }
+    .animate-hero-line-3 { animation: heroLineUp 0.55s var(--editorial-ease) 0.16s backwards; }
 
-    .hero-fade-in-left { animation: fadeInSlideUp 1.1s var(--editorial-ease) 0.2s backwards; }
-    .hero-fade-in-right { animation: fadeInSlideUp 1.1s var(--editorial-ease) 0.4s backwards; }
-    .hero-cutout-wrapper { animation: fadeInSlideUp 1.4s var(--editorial-ease) 0.5s backwards; }
+    .hero-fade-in-left { animation: fadeInSlideUp 0.55s var(--editorial-ease) 0.06s backwards; }
+    .hero-fade-in-right { animation: fadeInSlideUp 0.55s var(--editorial-ease) 0.12s backwards; }
+    .hero-cutout-wrapper { animation: fadeInSlideUp 0.6s var(--editorial-ease) 0.08s backwards; }
     .hero-float-idle { animation: floatSubtle 7s ease-in-out infinite; }
 
     .reveal-on-scroll {
@@ -468,7 +484,7 @@
             <div class="relative flex items-center justify-center hero-float-idle" id="hero-avatar-float-wrap">
               <!-- Rounded avatar badge with tactile jelly spring dynamics -->
               <div id="hero-draggable-avatar" class="group/avatar w-32 h-32 min-[360px]:w-36 min-[360px]:h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-1.5 sm:p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-all duration-300 hover:shadow-2xl hover:border-moss/60 hover:scale-[1.02]" title="Drag me!">
-                <img alt="Harjit Singh GitHub avatar" class="w-full h-full object-cover rounded-full contrast-[1.05] grayscale group-hover/avatar:grayscale-0 group-active/avatar:grayscale-0 transition-all duration-700 pointer-events-none select-none" draggable="false" fetchpriority="high" loading="eager" src="https://avatars.githubusercontent.com/u/166169358?v=4">
+                <img alt="Harjit Singh GitHub avatar" class="w-full h-full object-cover rounded-full contrast-[1.05] grayscale group-hover/avatar:grayscale-0 group-active/avatar:grayscale-0 transition-all duration-700 pointer-events-none select-none" decoding="async" draggable="false" fetchpriority="high" loading="eager" src="https://avatars.githubusercontent.com/u/166169358?v=4">
               </div>
             </div>
           </div>
