@@ -29,7 +29,8 @@
   </noscript>
 
   <!-- Non-blocking Deferred Scripts -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>window.gsap || document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"><\/script>');</script>
   <!-- Tailwind CSS v3 -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   
@@ -2353,7 +2354,7 @@
       window.addEventListener('pointercancel', onPointerUp);
     }
 
-    // 5-Second Maximum Cinematic Hero Entrance Animation (GSAP - Silk Jelly Emerge)
+    // 5-Second Maximum Cinematic Hero Entrance Animation (GSAP - Bulletproof GitHub & Local)
     window.__heroEntranceComplete = false;
 
     function initHeroEntranceAnimation() {
@@ -2363,11 +2364,6 @@
       };
 
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        exitEntranceMode();
-        return;
-      }
-
-      if (!window.gsap) {
         exitEntranceMode();
         return;
       }
@@ -2387,111 +2383,135 @@
         return;
       }
 
-      if (floatWrap) floatWrap.classList.remove('hero-float-idle');
-
-      const isMobile = window.innerWidth < 640;
-      const xDistance = isMobile ? 30 : 56;
-      const xSideDistance = isMobile ? 16 : 28;
-
-      const leftItems = leftCol ? Array.from(leftCol.children) : [];
-      const rightItems = rightCol ? Array.from(rightCol.children) : [];
-
-      const allTargets = [
-        avatar,
-        line1,
-        line2,
-        line3,
-        ...leftItems,
-        ...rightItems,
-        header,
-        footerStatus
-      ].filter(Boolean);
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        onComplete: () => {
+      const executeAnimation = () => {
+        if (!window.gsap) {
           exitEntranceMode();
-          if (!isAvatarDragging) {
-            gsap.set(allTargets, { clearProps: 'all' });
-            if (floatWrap) floatWrap.classList.add('hero-float-idle');
-          } else {
-            gsap.set(allTargets.filter(el => el !== avatar), { clearProps: 'all' });
-          }
+          return;
         }
-      });
 
-      // Safety fallback timeout
-      setTimeout(exitEntranceMode, 5200);
+        if (floatWrap) floatWrap.classList.remove('hero-float-idle');
 
-      // 1. Central Hero Image: Silk Jelly Emergence from single point (scale 0) to default (scale 1) with subtle rotation
-      tl.fromTo(avatar,
-        { scale: 0, opacity: 0, rotation: -18, transformOrigin: 'center center', force3D: true },
-        { 
-          scale: 1, 
-          opacity: 1, 
-          rotation: 0, 
-          duration: 1.55, 
-          ease: 'elastic.out(1.04, 0.68)',
-          force3D: true
-        },
-        0
-      );
+        const isMobile = window.innerWidth < 640;
+        const xDistance = isMobile ? 30 : 56;
+        const xSideDistance = isMobile ? 16 : 28;
 
-      // 2. Navigation Header: Elegant downward reveal
-      if (header) {
-        tl.fromTo(header,
-          { y: -18, opacity: 0, force3D: true },
-          { y: 0, opacity: 1, duration: 0.85, ease: 'power2.out', force3D: true },
-          0.35
+        const leftItems = leftCol ? Array.from(leftCol.children) : [];
+        const rightItems = rightCol ? Array.from(rightCol.children) : [];
+
+        const allTargets = [
+          avatar,
+          line1,
+          line2,
+          line3,
+          ...leftItems,
+          ...rightItems,
+          header,
+          footerStatus
+        ].filter(Boolean);
+
+        const tl = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          onComplete: () => {
+            exitEntranceMode();
+            if (!isAvatarDragging) {
+              gsap.set(allTargets, { clearProps: 'all' });
+              if (floatWrap) floatWrap.classList.add('hero-float-idle');
+            } else {
+              gsap.set(allTargets.filter(el => el !== avatar), { clearProps: 'all' });
+            }
+          }
+        });
+
+        // Safety fallback timeout
+        setTimeout(exitEntranceMode, 5200);
+
+        // 1. Central Hero Image: Silk Jelly Emergence from point size (scale 0) to default (scale 1) with subtle rotation
+        tl.fromTo(avatar,
+          { scale: 0, opacity: 0, rotation: -18, transformOrigin: 'center center', force3D: true },
+          { 
+            scale: 1, 
+            opacity: 1, 
+            rotation: 0, 
+            duration: 1.55, 
+            ease: 'elastic.out(1.04, 0.68)',
+            force3D: true
+          },
+          0
         );
-      }
 
-      // 3. Oversized Headlines: Monumental cinematic slide behind avatar with hardware compositor
-      tl.fromTo(line1,
-        { x: -xDistance, opacity: 0, force3D: true },
-        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
-        0.60
-      );
-      tl.fromTo(line2,
-        { x: xDistance, opacity: 0, force3D: true },
-        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
-        0.85
-      );
-      tl.fromTo(line3,
-        { x: -xDistance, opacity: 0, force3D: true },
-        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
-        1.10
-      );
+        // 2. Navigation Header: Elegant downward reveal
+        if (header) {
+          tl.fromTo(header,
+            { y: -18, opacity: 0, force3D: true },
+            { y: 0, opacity: 1, duration: 0.85, ease: 'power2.out', force3D: true },
+            0.35
+          );
+        }
 
-      // 4. Left Column Elements: Graceful cascading reveal
-      if (leftItems.length > 0) {
-        tl.fromTo(leftItems,
-          { x: -xSideDistance, opacity: 0, force3D: true },
-          { x: 0, opacity: 1, duration: 0.85, stagger: 0.10, ease: 'power2.out', force3D: true },
-          1.40
+        // 3. Oversized Headlines: Monumental cinematic slide behind avatar with hardware compositor
+        tl.fromTo(line1,
+          { x: -xDistance, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+          0.60
         );
-      }
-
-      // 5. Right Column Cards: Smooth domain cards entrance
-      if (rightItems.length > 0) {
-        tl.fromTo(rightItems,
-          { x: xSideDistance, opacity: 0, force3D: true },
-          { x: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power2.out', force3D: true },
-          2.10
+        tl.fromTo(line2,
+          { x: xDistance, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+          0.85
         );
-      }
-
-      // 6. Hero Footer Coordinates & Status Baseline
-      if (footerStatus) {
-        tl.fromTo(footerStatus,
-          { y: 14, opacity: 0, force3D: true },
-          { y: 0, opacity: 1, duration: 0.80, ease: 'power2.out', force3D: true },
-          2.70
+        tl.fromTo(line3,
+          { x: -xDistance, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+          1.10
         );
-      }
 
-      // Complete at exactly 5.0 seconds maximum
-      tl.add(() => {}, 5.00);
+        // 4. Left Column Elements: Graceful cascading reveal
+        if (leftItems.length > 0) {
+          tl.fromTo(leftItems,
+            { x: -xSideDistance, opacity: 0, force3D: true },
+            { x: 0, opacity: 1, duration: 0.85, stagger: 0.10, ease: 'power2.out', force3D: true },
+            1.40
+          );
+        }
+
+        // 5. Right Column Cards: Smooth domain cards entrance
+        if (rightItems.length > 0) {
+          tl.fromTo(rightItems,
+            { x: xSideDistance, opacity: 0, force3D: true },
+            { x: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power2.out', force3D: true },
+            2.10
+          );
+        }
+
+        // 6. Hero Footer Coordinates & Status Baseline
+        if (footerStatus) {
+          tl.fromTo(footerStatus,
+            { y: 14, opacity: 0, force3D: true },
+            { y: 0, opacity: 1, duration: 0.80, ease: 'power2.out', force3D: true },
+            2.70
+          );
+        }
+
+        // Complete at exactly 5.0 seconds maximum
+        tl.add(() => {}, 5.00);
+      };
+
+      // Resilient GSAP execution: trigger immediately or wait for CDN load
+      if (window.gsap) {
+        executeAnimation();
+      } else {
+        let attempts = 0;
+        const gsapCheckTimer = setInterval(() => {
+          attempts++;
+          if (window.gsap) {
+            clearInterval(gsapCheckTimer);
+            executeAnimation();
+          } else if (attempts >= 30) {
+            clearInterval(gsapCheckTimer);
+            exitEntranceMode();
+          }
+        }, 50);
+      }
     }
 
     // Unified DOM Initialization
