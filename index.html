@@ -49,7 +49,7 @@
         transform-origin: center center;
         transition: none !important;
         will-change: transform, opacity;
-        pointer-events: none;
+        pointer-events: auto !important;
       }
       html.hero-entrance-active .hero-float-idle {
         animation: none !important;
@@ -2279,6 +2279,7 @@
         baseX = curX;
         baseY = curY;
 
+        avatar.style.opacity = '1';
         avatar.style.transition = 'none';
         avatar.style.transform = `translate3d(${curX}px, ${curY}px, 0) scale(1.03)`;
       };
@@ -2410,8 +2411,12 @@
         defaults: { ease: 'power3.out' },
         onComplete: () => {
           exitEntranceMode();
-          gsap.set(allTargets, { clearProps: 'all' });
-          if (floatWrap) floatWrap.classList.add('hero-float-idle');
+          if (!isAvatarDragging) {
+            gsap.set(allTargets, { clearProps: 'all' });
+            if (floatWrap) floatWrap.classList.add('hero-float-idle');
+          } else {
+            gsap.set(allTargets.filter(el => el !== avatar), { clearProps: 'all' });
+          }
         }
       });
 
