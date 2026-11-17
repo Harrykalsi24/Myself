@@ -170,14 +170,15 @@
       50% { transform: translateY(-8px) rotate(0.3deg); }
     }
 
-    /* Fast, snappy GPU transitions with visible Frame 1 paint (Sub-second LCP) */
-    .animate-hero-line-1 { animation: heroLineUp 0.55s var(--editorial-ease) 0.04s backwards; }
-    .animate-hero-line-2 { animation: heroLineUp 0.55s var(--editorial-ease) 0.10s backwards; }
-    .animate-hero-line-3 { animation: heroLineUp 0.55s var(--editorial-ease) 0.16s backwards; }
-
-    .hero-fade-in-left { animation: fadeInSlideUp 0.55s var(--editorial-ease) 0.06s backwards; }
-    .hero-fade-in-right { animation: fadeInSlideUp 0.55s var(--editorial-ease) 0.12s backwards; }
-    .hero-cutout-wrapper { animation: fadeInSlideUp 0.6s var(--editorial-ease) 0.08s backwards; }
+    /* GPU-accelerated entrance elements & idle floating avatar */
+    .animate-hero-line-1,
+    .animate-hero-line-2,
+    .animate-hero-line-3,
+    .hero-fade-in-left,
+    .hero-fade-in-right,
+    .hero-cutout-wrapper {
+      will-change: transform, opacity;
+    }
     .hero-float-idle { animation: floatSubtle 7s ease-in-out infinite; }
 
     .reveal-on-scroll {
@@ -2314,8 +2315,122 @@
       window.addEventListener('pointercancel', onPointerUp);
     }
 
+    // 5-Second Maximum Cinematic Hero Entrance Animation (GSAP)
+    function initHeroEntranceAnimation() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap) return;
+
+      const avatar = document.getElementById('hero-draggable-avatar');
+      const floatWrap = document.getElementById('hero-avatar-float-wrap');
+      const line1 = document.querySelector('.animate-hero-line-1');
+      const line2 = document.querySelector('.animate-hero-line-2');
+      const line3 = document.querySelector('.animate-hero-line-3');
+      const leftCol = document.querySelector('[data-purpose="hero-left-column"]');
+      const rightCol = document.querySelector('[data-purpose="hero-right-services-column"]');
+      const header = document.querySelector('header[data-purpose="site-navigation-header"]');
+      const footerStatus = document.querySelector('[data-purpose="hero-footer-status"]');
+
+      if (!avatar || !line1 || !line2 || !line3) return;
+
+      if (floatWrap) floatWrap.classList.remove('hero-float-idle');
+
+      const isMobile = window.innerWidth < 640;
+      const xDistance = isMobile ? 36 : 72;
+      const xSideDistance = isMobile ? 18 : 32;
+
+      const leftItems = leftCol ? Array.from(leftCol.children) : [];
+      const rightItems = rightCol ? Array.from(rightCol.children) : [];
+
+      const allTargets = [
+        avatar,
+        line1,
+        line2,
+        line3,
+        ...leftItems,
+        ...rightItems,
+        header,
+        footerStatus
+      ].filter(Boolean);
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete: () => {
+          gsap.set(allTargets, { clearProps: 'all' });
+          if (floatWrap) floatWrap.classList.add('hero-float-idle');
+        }
+      });
+
+      // 1. Central Hero Image: Point-size growth (0 -> 1) with slight rotation (-22° -> 0°) and luxuriant jelly elastic damping
+      tl.fromTo(avatar,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35, ease: 'power2.out' },
+        0
+      );
+      tl.fromTo(avatar,
+        { scale: 0, rotation: -22, transformOrigin: 'center center' },
+        { scale: 1, rotation: 0, duration: 1.80, ease: 'elastic.out(1.15, 0.44)' },
+        0
+      );
+
+      // 2. Navigation Header: Elegant downward reveal
+      if (header) {
+        tl.fromTo(header,
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.90, ease: 'power3.out' },
+          0.40
+        );
+      }
+
+      // 3. Oversized Headlines: Monumental cinematic entrance passing behind center avatar
+      tl.fromTo(line1,
+        { x: -xDistance, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
+        0.70
+      );
+      tl.fromTo(line2,
+        { x: xDistance, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
+        0.95
+      );
+      tl.fromTo(line3,
+        { x: -xDistance, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
+        1.20
+      );
+
+      // 4. Left Column Elements: Graceful cascading reveal
+      if (leftItems.length > 0) {
+        tl.fromTo(leftItems,
+          { x: -xSideDistance, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.95, stagger: 0.12, ease: 'power3.out' },
+          1.50
+        );
+      }
+
+      // 5. Right Column Cards: Smooth domain cards entrance
+      if (rightItems.length > 0) {
+        tl.fromTo(rightItems,
+          { x: xSideDistance, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.95, stagger: 0.15, ease: 'power3.out' },
+          2.20
+        );
+      }
+
+      // 6. Hero Footer Coordinates & Status Baseline
+      if (footerStatus) {
+        tl.fromTo(footerStatus,
+          { y: 16, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.90, ease: 'power3.out' },
+          2.80
+        );
+      }
+
+      // Complete at exactly 5.0 seconds maximum
+      tl.add(() => {}, 5.00);
+    }
+
     // Unified DOM Initialization
     function initPortfolio() {
+      initHeroEntranceAnimation();
       initCustomCursor();
       initTypewriter();
       initDraggableAvatar();
