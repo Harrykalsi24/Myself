@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" data-theme="light" lang="en">
+<html class="scroll-smooth hero-entrance-active" data-theme="light" lang="en">
 <head>
+  <script>
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.remove('hero-entrance-active');
+    }
+  </script>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>It's Harry!</title>
@@ -30,6 +35,38 @@
   
   <!-- Theme Color Variables & Unified Styles -->
   <style>
+    /* --- Anti-FOUC & Hero Initial Entrance State (Zero-Flash, Point-Size Scale 0, Hardware Composited) --- */
+    #hero-draggable-avatar {
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform-origin: center center;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      html.hero-entrance-active #hero-draggable-avatar {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0) rotate(-18deg);
+        transform-origin: center center;
+        transition: none !important;
+        will-change: transform, opacity;
+        pointer-events: none;
+      }
+      html.hero-entrance-active .hero-float-idle {
+        animation: none !important;
+      }
+      html.hero-entrance-active .animate-hero-line-1,
+      html.hero-entrance-active .animate-hero-line-2,
+      html.hero-entrance-active .animate-hero-line-3,
+      html.hero-entrance-active [data-purpose="hero-left-column"] > *,
+      html.hero-entrance-active [data-purpose="hero-right-services-column"] > *,
+      html.hero-entrance-active header[data-purpose="site-navigation-header"],
+      html.hero-entrance-active [data-purpose="hero-footer-status"] {
+        opacity: 0;
+        transition: none !important;
+        will-change: transform, opacity;
+      }
+    }
+
     :root {
       --bg-canvas: #DFE5D3;
       --bg-surface: #D8DFC9;
@@ -87,7 +124,7 @@
     }
     
     .hero-cutout-shadow {
-      filter: drop-shadow(0 25px 30px rgba(18, 24, 18, 0.32));
+      box-shadow: 0 25px 35px -5px rgba(18, 24, 18, 0.32), 0 0 0 1px rgba(56, 76, 53, 0.12);
     }
 
     /* Hide native OS pointer on desktop fine-pointer devices */
@@ -470,13 +507,13 @@
           <!-- Massive 3-Tier Layered Condensed Headline: Solve. Shape. Simplify. (Left Aligned on Mobile, Centered on Desktop) -->
           <div class="display-condensed text-[46px] min-[360px]:text-[54px] min-[400px]:text-[64px] sm:text-[108px] md:text-[142px] lg:text-[168px] xl:text-[196px] font-black tracking-normal text-moss text-left lg:text-center flex flex-col items-start lg:items-center justify-center leading-[0.82] w-auto lg:w-full z-0 select-none overflow-visible pt-0 pb-1" id="hero-headline-group">
             <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
-              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-1 will-change-transform px-1 sm:px-4">SOLVE.</span>
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] hover:transition-transform hover:duration-500 animate-hero-line-1 will-change-transform px-1 sm:px-4">SOLVE.</span>
             </span>
             <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
-              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-2 will-change-transform px-1 sm:px-4">SHAPE.</span>
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] hover:transition-transform hover:duration-500 animate-hero-line-2 will-change-transform px-1 sm:px-4">SHAPE.</span>
             </span>
             <span class="block overflow-visible w-full py-0.5 sm:py-1 text-left lg:text-center flex justify-start lg:justify-center">
-              <span class="block text-left lg:text-center transform hover:scale-[1.01] transition-transform duration-500 animate-hero-line-3 will-change-transform px-1 sm:px-4">SIMPLIFY.</span>
+              <span class="block text-left lg:text-center transform hover:scale-[1.01] hover:transition-transform hover:duration-500 animate-hero-line-3 will-change-transform px-1 sm:px-4">SIMPLIFY.</span>
             </span>
           </div>
 
@@ -484,7 +521,7 @@
           <div class="absolute inset-0 flex items-center justify-end lg:justify-center pointer-events-none z-10 hero-cutout-wrapper overflow-visible pr-1 min-[380px]:pr-3 sm:pr-6 lg:pr-0" data-purpose="hero-editorial-subject-cutout" id="hero-parallax-art">
             <div class="relative flex items-center justify-center hero-float-idle" id="hero-avatar-float-wrap">
               <!-- Rounded avatar badge with tactile jelly spring dynamics -->
-              <div id="hero-draggable-avatar" class="group/avatar w-32 h-32 min-[360px]:w-36 min-[360px]:h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-1.5 sm:p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-all duration-300 hover:shadow-2xl hover:border-moss/60 hover:scale-[1.02]" title="Drag me!">
+              <div id="hero-draggable-avatar" class="group/avatar w-32 h-32 min-[360px]:w-36 min-[360px]:h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full p-1.5 sm:p-2 bg-celadon/80 backdrop-blur-md border-2 border-moss/30 hero-cutout-shadow flex items-center justify-center overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing select-none touch-none will-change-transform z-20 transition-[box-shadow,border-color] duration-300 hover:shadow-2xl hover:border-moss/60" title="Drag me!">
                 <img alt="Harjit Singh GitHub avatar" class="w-full h-full object-cover rounded-full contrast-[1.05] grayscale group-hover/avatar:grayscale-0 group-active/avatar:grayscale-0 transition-all duration-700 pointer-events-none select-none" decoding="async" draggable="false" fetchpriority="high" loading="eager" src="https://avatars.githubusercontent.com/u/166169358?v=4">
               </div>
             </div>
@@ -2315,9 +2352,24 @@
       window.addEventListener('pointercancel', onPointerUp);
     }
 
-    // 5-Second Maximum Cinematic Hero Entrance Animation (GSAP)
+    // 5-Second Maximum Cinematic Hero Entrance Animation (GSAP - Silk Jelly Emerge)
+    window.__heroEntranceComplete = false;
+
     function initHeroEntranceAnimation() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap) return;
+      const exitEntranceMode = () => {
+        window.__heroEntranceComplete = true;
+        document.documentElement.classList.remove('hero-entrance-active');
+      };
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        exitEntranceMode();
+        return;
+      }
+
+      if (!window.gsap) {
+        exitEntranceMode();
+        return;
+      }
 
       const avatar = document.getElementById('hero-draggable-avatar');
       const floatWrap = document.getElementById('hero-avatar-float-wrap');
@@ -2329,13 +2381,16 @@
       const header = document.querySelector('header[data-purpose="site-navigation-header"]');
       const footerStatus = document.querySelector('[data-purpose="hero-footer-status"]');
 
-      if (!avatar || !line1 || !line2 || !line3) return;
+      if (!avatar || !line1 || !line2 || !line3) {
+        exitEntranceMode();
+        return;
+      }
 
       if (floatWrap) floatWrap.classList.remove('hero-float-idle');
 
       const isMobile = window.innerWidth < 640;
-      const xDistance = isMobile ? 36 : 72;
-      const xSideDistance = isMobile ? 18 : 32;
+      const xDistance = isMobile ? 30 : 56;
+      const xSideDistance = isMobile ? 16 : 28;
 
       const leftItems = leftCol ? Array.from(leftCol.children) : [];
       const rightItems = rightCol ? Array.from(rightCol.children) : [];
@@ -2354,73 +2409,79 @@
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out' },
         onComplete: () => {
+          exitEntranceMode();
           gsap.set(allTargets, { clearProps: 'all' });
           if (floatWrap) floatWrap.classList.add('hero-float-idle');
         }
       });
 
-      // 1. Central Hero Image: Point-size growth (0 -> 1) with slight rotation (-22° -> 0°) and luxuriant jelly elastic damping
+      // Safety fallback timeout
+      setTimeout(exitEntranceMode, 5200);
+
+      // 1. Central Hero Image: Silk Jelly Emergence from single point (scale 0) to default (scale 1) with subtle rotation
       tl.fromTo(avatar,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.35, ease: 'power2.out' },
-        0
-      );
-      tl.fromTo(avatar,
-        { scale: 0, rotation: -22, transformOrigin: 'center center' },
-        { scale: 1, rotation: 0, duration: 1.80, ease: 'elastic.out(1.15, 0.44)' },
+        { scale: 0, opacity: 0, rotation: -18, transformOrigin: 'center center', force3D: true },
+        { 
+          scale: 1, 
+          opacity: 1, 
+          rotation: 0, 
+          duration: 1.55, 
+          ease: 'elastic.out(1.04, 0.68)',
+          force3D: true
+        },
         0
       );
 
       // 2. Navigation Header: Elegant downward reveal
       if (header) {
         tl.fromTo(header,
-          { y: -20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.90, ease: 'power3.out' },
-          0.40
+          { y: -18, opacity: 0, force3D: true },
+          { y: 0, opacity: 1, duration: 0.85, ease: 'power2.out', force3D: true },
+          0.35
         );
       }
 
-      // 3. Oversized Headlines: Monumental cinematic entrance passing behind center avatar
+      // 3. Oversized Headlines: Monumental cinematic slide behind avatar with hardware compositor
       tl.fromTo(line1,
-        { x: -xDistance, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
-        0.70
+        { x: -xDistance, opacity: 0, force3D: true },
+        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+        0.60
       );
       tl.fromTo(line2,
-        { x: xDistance, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
-        0.95
+        { x: xDistance, opacity: 0, force3D: true },
+        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+        0.85
       );
       tl.fromTo(line3,
-        { x: -xDistance, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.25, ease: 'power3.out' },
-        1.20
+        { x: -xDistance, opacity: 0, force3D: true },
+        { x: 0, opacity: 1, duration: 1.15, ease: 'power3.out', force3D: true },
+        1.10
       );
 
       // 4. Left Column Elements: Graceful cascading reveal
       if (leftItems.length > 0) {
         tl.fromTo(leftItems,
-          { x: -xSideDistance, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.95, stagger: 0.12, ease: 'power3.out' },
-          1.50
+          { x: -xSideDistance, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 0.85, stagger: 0.10, ease: 'power2.out', force3D: true },
+          1.40
         );
       }
 
       // 5. Right Column Cards: Smooth domain cards entrance
       if (rightItems.length > 0) {
         tl.fromTo(rightItems,
-          { x: xSideDistance, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.95, stagger: 0.15, ease: 'power3.out' },
-          2.20
+          { x: xSideDistance, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power2.out', force3D: true },
+          2.10
         );
       }
 
       // 6. Hero Footer Coordinates & Status Baseline
       if (footerStatus) {
         tl.fromTo(footerStatus,
-          { y: 16, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.90, ease: 'power3.out' },
-          2.80
+          { y: 14, opacity: 0, force3D: true },
+          { y: 0, opacity: 1, duration: 0.80, ease: 'power2.out', force3D: true },
+          2.70
         );
       }
 
@@ -2515,7 +2576,7 @@
         });
 
         function animateParallax() {
-          if (!isAvatarDragging) {
+          if (!isAvatarDragging && window.__heroEntranceComplete) {
             currentX += (mouseX - currentX) * 0.08;
             currentY += (mouseY - currentY) * 0.08;
             if (parallaxTarget) parallaxTarget.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
